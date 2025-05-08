@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://dy1rgpvj3afyd"]
+
+[ext_resource type="Script" path="res://UI/GUI.gd" id="1_u7efx"]
+[ext_resource type="Script" path="res://UI/flow_visualizer.gd" id="2_4wmf3"]
+
+[node name="Gui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_u7efx")
+
+[node name="Flow_Visualizer" type="Node2D" parent="."]
+script = ExtResource("2_4wmf3")
+
+[node name="Redraw_Timer" type="Timer" parent="Flow_Visualizer"]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Flow_Visualizer/Redraw_Timer" to="Flow_Visualizer" method="_on_redraw_timer_timeout"]

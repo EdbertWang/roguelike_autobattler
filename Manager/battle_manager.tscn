@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://b2hkuu4ohgbnk"]
+
+[ext_resource type="Script" path="res://Manager/battle_manager.gd" id="1_c6fe6"]
+[ext_resource type="Script" path="res://Manager/FlowGen.gd" id="1_i8jx7"]
+[ext_resource type="Script" path="res://Manager/TargetManager.gd" id="2_7x82o"]
+[ext_resource type="PackedScene" uid="uid://cpeerva01chph" path="res://Units/base_unit/basic_unit.tscn" id="2_qhfok"]
+[ext_resource type="PackedScene" uid="uid://dy1rgpvj3afyd" path="res://UI/GUI.tscn" id="5_m15cc"]
+[ext_resource type="Script" path="res://Units/base_unit/basic_unit.gd" id="5_ow4m4"]
+
+[node name="BattleManager" type="Node2D"]
+script = ExtResource("1_c6fe6")
+map_size = Vector2i(2000, 1500)
+tile_size = 100
+
+[node name="TileMap" type="TileMap" parent="."]
+format = 2
+
+[node name="FlowGen" type="Node" parent="." groups=["FLOWGEN"]]
+script = ExtResource("1_i8jx7")
+
+[node name="TargetManager" type="Node" parent="." groups=["TARGETMANAGER"]]
+script = ExtResource("2_7x82o")
+
+[node name="Unit_Parent" type="Node" parent="."]
+
+[node name="BasicUnit2" parent="Unit_Parent" instance=ExtResource("2_qhfok")]
+position = Vector2(514, 54)
+script = ExtResource("5_ow4m4")
+base_speed = 40
+faction = true
+
+[node name="BasicUnit" parent="Unit_Parent" instance=ExtResource("2_qhfok")]
+position = Vector2(833, 42)
+script = ExtResource("5_ow4m4")
+base_speed = 40
+
+[node name="Manager_Update" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="Gui" parent="." instance=ExtResource("5_m15cc")]
+
+[node name="Flow_Visualizer" parent="Gui" index="0"]
+showEnemy = true
+drawGrid = true
+
+[node name="Redraw_Timer" parent="Gui/Flow_Visualizer" index="0"]
+wait_time = 0.25
+
+[connection signal="timeout" from="Manager_Update" to="." method="_on_manager_update_timeout"]
+
+[editable path="Gui"]
