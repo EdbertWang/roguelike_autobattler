@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ce1bfpxqrdj"
-path="res://.godot/imported/basic_unit_sprites.png-d21d5a00227e2e19180907b89a274d4b.ctex"
+uid="uid://eyq2w1u7qoy"
+path="res://.godot/imported/ranged_projectile.png-bfbcf185ee68183692796725558b0852.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Units/base_unit/basic_unit_sprites.png"
-dest_files=["res://.godot/imported/basic_unit_sprites.png-d21d5a00227e2e19180907b89a274d4b.ctex"]
+source_file="res://Units/base_enemy/ranged_projectile.png"
+dest_files=["res://.godot/imported/ranged_projectile.png-bfbcf185ee68183692796725558b0852.ctex"]
 
 [params]
 

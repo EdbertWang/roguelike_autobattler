@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://eyq2w1u7qoy"
-path="res://.godot/imported/basic_attack.png-d2c03ac859e7deff9a06d13a5a64ba7b.ctex"
+uid="uid://d27uvg5o4dqir"
+path="res://.godot/imported/ranged_unit.png-53c21e5fdd98dcb1ae0c6a585ecd9575.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Units/base_unit/basic_attack.png"
-dest_files=["res://.godot/imported/basic_attack.png-d2c03ac859e7deff9a06d13a5a64ba7b.ctex"]
+source_file="res://Units/base_enemy/ranged_unit.png"
+dest_files=["res://.godot/imported/ranged_unit.png-53c21e5fdd98dcb1ae0c6a585ecd9575.ctex"]
 
 [params]
 

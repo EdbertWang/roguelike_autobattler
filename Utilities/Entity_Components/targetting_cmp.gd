@@ -6,7 +6,6 @@ var target_manager
 var flow_field
 
 ###### Internal variables
-@export var unit_range : int
 var curr_targets : Array
 var flow_vec : Vector2
 
@@ -16,28 +15,27 @@ var target_idx = 0
 ##### Primary Functions
 
 func get_N_targets(num_targets : int) -> Array:
-	var results : Array = []
 	# Check if the target manager has updated recently
-	# If not, get the first N non null elements
-	if target_manager.target_iter == curr_target_iter:
-		for i in curr_targets:
-			if i != null:
-				results.append(i)
-		curr_targets = results
-
-	# Otherwise, get a new targets array from the manager and sort them by distance
-	else:
+	# get a new targets array from the manager and sort them by distanc
+	
+	if target_manager.target_iter != curr_target_iter:
 		curr_target_iter = target_manager.target_iter
 		curr_targets = target_manager.get_targets(!unit.faction, unit.position, num_targets)
 		curr_targets.sort_custom(_sort_ascending_distance)
 		
+	var results : Array = []
+	for i in curr_targets:
+		if i != null:
+			results.append(i)
+	curr_targets = results
+	
 	target_idx = 0
 	return curr_targets
 
 
 func get_target() -> Base_Unit:
 	var result = get_N_targets(1)
-	if result:
+	if result and result[0] != null:
 		return result[0]
 	else:
 		return null
@@ -48,17 +46,13 @@ func get_flow_field() -> Vector2:
 
 func get_dir_target() -> Vector2:
 	if _get_non_null_idx():
-		return  curr_targets[target_idx].position - unit.position
+		return  (curr_targets[target_idx].position - unit.position).normalized()
 	return flow_vec
 	
-func in_range() -> bool:
-	if _get_non_null_idx():
-		return (curr_targets[target_idx].position - unit.position).length_squared() < unit_range ** 2
-	return false
-
 func in_same_tile() -> bool:
 	if _get_non_null_idx():
-		return (curr_targets[target_idx].position - unit.position).length_squared() < target_manager.get_parent().tile_size ** 2
+		# use larger than the size of a tile to prevent getting stuck at edges
+		return (curr_targets[target_idx].position - unit.position).length_squared() < (target_manager.get_parent().tile_size * 1.5) ** 2
 	return false
 
 ####### Helper functions

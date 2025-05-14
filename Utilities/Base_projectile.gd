@@ -1,41 +1,36 @@
-extends HitBox
+extends Area2D
 
 class_name Base_Projectile
 
-@export var id : int = -1
+@onready var sprite : AnimatedSprite2D = $AnimatedSprite2D
+@onready var col_shape : CollisionShape2D = $CollisionShape2D
+@onready var lifetime : Timer = $Lifetime
+@onready var animation : AnimationPlayer = $ AnimationPlayer
+
+###### Internal Vars
 @export var speed : int = 50
+@export var lifetime_val : float = 1.0
 var direction : Vector2
+var target_faction : bool
 
-var spawner : Base_Spawner
-
+###### Standard Functions
 
 func _physics_process(delta):
 	position += direction * speed * delta
 
 
 func _on_lifetime_timeout():
-	#print($Lifetime.wait_time)
-	if spawner != null:
-		spawner._return_bullet_to_pool(self)
-	else:
 		queue_free()
 	
 func entity_hit():
-	if spawner != null:
-		spawner._return_bullet_to_pool(self)
-	else:
 		queue_free()
 	
 
-func _on_body_entered(_body):
-	if spawner != null:
-		spawner._return_bullet_to_pool(self)
-	else:
+func _on_body_entered(body):
+	if body.faction == target_faction:
 		queue_free()
-
-
-func reset_base_state():
-	pass
+	else:
+		pass
 
 func set_direction():
 	direction = Vector2.from_angle(rotation)

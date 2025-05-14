@@ -1,8 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://cpeerva01chph"]
+[gd_scene load_steps=17 format=3 uid="uid://cpeerva01chph"]
 
 [ext_resource type="PackedScene" uid="uid://dqe8xadue3a2n" path="res://Utilities/Base_Unit.tscn" id="1_g2lu5"]
-[ext_resource type="Texture2D" uid="uid://ce1bfpxqrdj" path="res://Units/base_unit/basic_unit_sprites.png" id="2_g8j08"]
-[ext_resource type="Script" path="res://Units/base_unit/basic_unit_fsm.gd" id="2_hcx1d"]
+[ext_resource type="Texture2D" uid="uid://ce1bfpxqrdj" path="res://Units/melee_unit_template/basic_unit_sprites.png" id="2_g8j08"]
+[ext_resource type="Script" path="res://Units/melee_unit_template/melee_unit_fsm.gd" id="2_hcx1d"]
+[ext_resource type="PackedScene" uid="uid://dyfsrdj085rjw" path="res://Utilities/Entity_Components/Attack_Base.tscn" id="4_7836s"]
+[ext_resource type="Script" path="res://Units/melee_unit_template/basic_melee.gd" id="5_tgfs3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rfhwj"]
 atlas = ExtResource("2_g8j08")
@@ -91,7 +93,7 @@ _data = {
 "dead": SubResource("Animation_rbyda")
 }
 
-[node name="BasicUnit" instance=ExtResource("1_g2lu5")]
+[node name="MeleeUnitTemplate" instance=ExtResource("1_g2lu5")]
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 position = Vector2(1, 0)
@@ -108,3 +110,8 @@ libraries = {
 
 [node name="FSM" parent="." index="3"]
 script = ExtResource("2_hcx1d")
+
+[node name="Melee_Attack" parent="." index="5" instance=ExtResource("4_7836s")]
+script = ExtResource("5_tgfs3")
+attack_range = 30
+damage = 10

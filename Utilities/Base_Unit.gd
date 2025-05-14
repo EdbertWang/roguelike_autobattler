@@ -2,16 +2,19 @@ extends CharacterBody2D
 class_name Base_Unit
 
 @onready var sprite = $AnimatedSprite2D
-@onready var coll = $CollisionShape2D
+@onready var coll_circle = $CollisionShape2D
 @onready var animation = $AnimationPlayer
 @onready var state_machine = $FSM
 @onready var target_move = $Target_Movement
 
 var unit_name : String
 
-# Stats - gets set based on data in CSV files
+# Stats
 @export var max_hp : int
 @onready var curr_hp : int = max_hp
+
+var dmg_dealt_mult : float = 1.0
+var dmg_taken_mult : float = 1.0
 
 # Movement Related
 @export var base_speed : int
@@ -28,8 +31,8 @@ func movement():
 	velocity = move_vec.normalized() * move_speed
 	
 
-func _on_hurt_box_hurt(damage: int):
-	curr_hp -= damage
+func take_damage(damage: int):
+	curr_hp -= damage * dmg_taken_mult
 
 	if curr_hp <= 0:
 		state_machine.set_state(state_machine.states.dead)

@@ -1,24 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://45n1f4s4g5hm"]
+[gd_scene load_steps=2 format=3 uid="uid://ds2ntigtworxc"]
 
-[ext_resource type="PackedScene" uid="uid://b6ptu8qp0cp60" path="res://Utilities/Entity_Components/hurt_box.tscn" id="1_qrsqu"]
-[ext_resource type="Script" path="res://Utilities/Base_projectile.gd" id="2_neu7a"]
+[ext_resource type="Script" path="res://Utilities/Base_projectile.gd" id="1_byrb5"]
 
-[node name="Base_Projectile" instance=ExtResource("1_qrsqu")]
-collision_layer = 1
-collision_mask = 1
-script = ExtResource("2_neu7a")
-id = -1
-speed = 10
-damage = 1
+[node name="Base_Projectile" type="Area2D"]
+script = ExtResource("1_byrb5")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="0"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
-[node name="CollisionShape2D" parent="." index="2"]
-shape = null
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
-[node name="Lifetime" type="Timer" parent="." index="4"]
+[node name="Lifetime" type="Timer" parent="."]
 autostart = true
 
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="Lifetime" to="." method="_on_lifetime_timeout"]
