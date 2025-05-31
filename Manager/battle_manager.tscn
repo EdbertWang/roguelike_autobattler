@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://Units/melee_unit_template/melee_unit_template.gd" id="5_ow4m4"]
 [ext_resource type="PackedScene" uid="uid://dntchg7qjone2" path="res://Units/base_enemy/RangedUnitTemplate.tscn" id="6_kbjsa"]
 
-[node name="BattleManager" type="Node2D"]
+[node name="BattleManager" type="Node2D" groups=["BATTLEMANAGER"]]
 script = ExtResource("1_c6fe6")
 map_size = Vector2i(2000, 1500)
 tile_size = 100

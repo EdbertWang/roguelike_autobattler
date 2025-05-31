@@ -3,8 +3,8 @@ extends Control
 class_name Inventory
 
 var slots : Array[InventorySlot]
-@onready var window : Panel = $InventoryPanel
-@onready var inventory_grid : Label = $InventoryPanel/Inventory
+
+@onready var inventory_grid : Label = $InventoryGrid
 @export var starter_items : Array[Item]
 @export var columns : int
 @export var rows : int
@@ -30,10 +30,10 @@ func _ready ():
 
 func _process (delta):
 	if Input.is_action_just_pressed("inventory"):
-		toggle_window(!window.visible)
+		toggle_window(!visible)
 
 func toggle_window (open : bool):
-	window.visible = open
+	visible = open
   
 	if open:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

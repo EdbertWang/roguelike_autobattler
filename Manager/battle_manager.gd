@@ -51,6 +51,15 @@ func update_tiles():
 			allies_tiles[tile.x][tile.y].append(unit)
 		else: # If unit is an enemy unit
 			enemies_tiles[tile.x][tile.y].append(unit)
+ 
+func add_unit_to_board(unit_ref : PackedScene) -> void:
+	pass
+	
+func remove_unit_from_board(top_corner: Vector2, size: Vector2) -> void:
+	var rect := Rect2(top_corner, size)
+	for u in unit_parent.get_children():
+		if rect.has_point(u.position):
+			u.queue_free()
 
 
 func _on_manager_update_timeout():

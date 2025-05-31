@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvin2a62ufrm8"]
+
+[ext_resource type="Script" path="res://Manager/BoardUI.gd" id="1_ybq7s"]
+
+[node name="BoardUi" type="Node2D"]
+script = ExtResource("1_ybq7s")
+
+[node name="SpellBar" type="HBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="UnitBoard" type="TileMap" parent="."]
+format = 2

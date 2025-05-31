@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bimatrqbbfll5"]
+
+[ext_resource type="PackedScene" uid="uid://wmqojryy36y2" path="res://Utilities/Item.tscn" id="1_iefvp"]
+[ext_resource type="Script" path="res://Utilities/spell_card.gd" id="2_dd78s"]
+
+[node name="spell_card" instance=ExtResource("1_iefvp")]
+script = ExtResource("2_dd78s")
+related_spell_effect = null
+mana_cost = 0
+cooldown = 0
+
+[node name="CoolDown" type="Timer" parent="." index="0"]
