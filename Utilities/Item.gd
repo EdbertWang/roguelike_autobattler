@@ -1,4 +1,4 @@
-extends Node
+extends Sprite2D
 class_name Item
 
 enum TYPE {
@@ -7,9 +7,8 @@ enum TYPE {
 }
 
 # Can either be a spell or 1 stack of a unit
-
-@export var item_name : String
 var item_type : TYPE
+@export var item_name : String
 @export var max_stack_size : int
 @export var unit_slots : int
 @export var spell_slots : int

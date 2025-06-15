@@ -12,8 +12,8 @@ var placement_vectors : Array
 func ready():
 	item_type = TYPE.unit_card
 	placement_vectors = divide_grid(num_units)
-	
-	
+
+
 func get_placement_vectors(rotation : int) -> Array:
 	if rotation == 0:
 		return placement_vectors

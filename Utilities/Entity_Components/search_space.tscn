@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://2gcy8et378vy"]
 
-[ext_resource type="Script" path="res://Utilities/Entity_Components/search_space.gd" id="1_uqx1m"]
+[ext_resource type="Script" uid="uid://drha6wykbqwdm" path="res://Utilities/Entity_Components/search_space.gd" id="1_uqx1m"]
 
 [node name="SearchSpace" type="Area2D"]
 script = ExtResource("1_uqx1m")

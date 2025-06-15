@@ -5,7 +5,7 @@ class_name Base_Projectile
 @onready var sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var col_shape : CollisionShape2D = $CollisionShape2D
 @onready var lifetime : Timer = $Lifetime
-@onready var animation : AnimationPlayer = $ AnimationPlayer
+@onready var animation : AnimationPlayer = $AnimationPlayer
 
 ###### Internal Vars
 @export var speed : int = 50

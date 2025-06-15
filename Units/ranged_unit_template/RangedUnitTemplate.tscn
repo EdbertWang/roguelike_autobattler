@@ -2,9 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://dqe8xadue3a2n" path="res://Utilities/Base_Unit.tscn" id="1_4obhc"]
 [ext_resource type="Texture2D" uid="uid://ce1bfpxqrdj" path="res://Units/melee_unit_template/basic_unit_sprites.png" id="2_3t6ih"]
-[ext_resource type="Script" path="res://Units/base_enemy/ranged_unit_fsm.gd" id="3_044i3"]
+[ext_resource type="Script" uid="uid://dh4tqvn6emwhy" path="res://Units/ranged_unit_template/ranged_unit_fsm.gd" id="3_044i3"]
 [ext_resource type="PackedScene" uid="uid://dyfsrdj085rjw" path="res://Utilities/Entity_Components/Attack_Base.tscn" id="4_le515"]
-[ext_resource type="Script" path="res://Units/base_enemy/basic_ranged.gd" id="5_spjok"]
+[ext_resource type="Script" uid="uid://bfh0eex83r6af" path="res://Units/ranged_unit_template/basic_ranged.gd" id="5_spjok"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rfhwj"]
 atlas = ExtResource("2_3t6ih")
@@ -90,7 +90,7 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p2yhk"]
 _data = {
-"dead": SubResource("Animation_rbyda")
+&"dead": SubResource("Animation_rbyda")
 }
 
 [node name="RangedUnitTemplate" instance=ExtResource("1_4obhc")]

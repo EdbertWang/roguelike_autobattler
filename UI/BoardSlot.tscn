@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://blnyjtre2v7ly"]
+
+[ext_resource type="Script" uid="uid://cv4mafbqcwg5j" path="res://UI/BoardSlot.gd" id="1_melhx"]
+
+[node name="BoardSlot" type="PanelContainer"]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("1_melhx")

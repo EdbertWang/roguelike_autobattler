@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://klgd83iitkqd"]
+[gd_scene load_steps=3 format=3 uid="uid://klgd83iitkqd"]
 
-[ext_resource type="Script" path="res://Manager/Inventory.gd" id="1_3dsnw"]
+[ext_resource type="Script" uid="uid://qocy1eid6bjf" path="res://UI/Inventory.gd" id="1_3dsnw"]
+[ext_resource type="PackedScene" uid="uid://b8del21khdewg" path="res://UI/InventorySlot.tscn" id="2_efu02"]
 
 [node name="Inventory" type="Panel"]
 offset_left = 9.0
@@ -8,6 +9,7 @@ offset_top = 2.0
 offset_right = 9.0
 offset_bottom = 2.0
 script = ExtResource("1_3dsnw")
+slot_autoload = ExtResource("2_efu02")
 
 [node name="InventoryGrid" type="GridContainer" parent="."]
 layout_mode = 1

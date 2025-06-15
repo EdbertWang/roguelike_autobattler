@@ -1,20 +1,32 @@
-[gd_scene load_steps=8 format=3 uid="uid://b2hkuu4ohgbnk"]
+[gd_scene load_steps=9 format=3 uid="uid://b2hkuu4ohgbnk"]
 
-[ext_resource type="Script" path="res://Manager/battle_manager.gd" id="1_c6fe6"]
-[ext_resource type="Script" path="res://Manager/FlowGen.gd" id="1_i8jx7"]
-[ext_resource type="Script" path="res://Manager/TargetManager.gd" id="2_7x82o"]
+[ext_resource type="Script" uid="uid://cuad6lpso0q62" path="res://Manager/battle_manager.gd" id="1_c6fe6"]
+[ext_resource type="Script" uid="uid://hqlphn02kabu" path="res://UI/FlowGen.gd" id="1_i8jx7"]
+[ext_resource type="Script" uid="uid://dxavhucjkx8u3" path="res://Manager/TargetManager.gd" id="2_7x82o"]
 [ext_resource type="PackedScene" uid="uid://cpeerva01chph" path="res://Units/melee_unit_template/MeleeUnitTemplate.tscn" id="2_qhfok"]
+[ext_resource type="PackedScene" uid="uid://dvin2a62ufrm8" path="res://UI/BoardUI.tscn" id="3_vbtom"]
 [ext_resource type="PackedScene" uid="uid://dy1rgpvj3afyd" path="res://UI/GUI.tscn" id="5_m15cc"]
-[ext_resource type="Script" path="res://Units/melee_unit_template/melee_unit_template.gd" id="5_ow4m4"]
-[ext_resource type="PackedScene" uid="uid://dntchg7qjone2" path="res://Units/base_enemy/RangedUnitTemplate.tscn" id="6_kbjsa"]
+[ext_resource type="Script" uid="uid://bpck23uarryp" path="res://Units/melee_unit_template/melee_unit_template.gd" id="5_ow4m4"]
+[ext_resource type="PackedScene" uid="uid://dntchg7qjone2" path="res://Units/ranged_unit_template/RangedUnitTemplate.tscn" id="6_kbjsa"]
 
 [node name="BattleManager" type="Node2D" groups=["BATTLEMANAGER"]]
 script = ExtResource("1_c6fe6")
 map_size = Vector2i(2000, 1500)
 tile_size = 100
 
-[node name="TileMap" type="TileMap" parent="."]
-format = 2
+[node name="BoardUI" parent="." instance=ExtResource("3_vbtom")]
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 30
+width = 30
+height = 30
+cellWidth = 50
+cellHeight = 50
+
+[node name="Gui" parent="." instance=ExtResource("5_m15cc")]
+
+[node name="Redraw_Timer" parent="Gui/Flow_Visualizer" index="0"]
+wait_time = 0.25
 
 [node name="FlowGen" type="Node" parent="." groups=["FLOWGEN"]]
 script = ExtResource("1_i8jx7")
@@ -59,12 +71,7 @@ base_speed = 100
 wait_time = 0.1
 autostart = true
 
-[node name="Gui" parent="." instance=ExtResource("5_m15cc")]
-
-[node name="Redraw_Timer" parent="Gui/Flow_Visualizer" index="0"]
-wait_time = 0.25
-
 [connection signal="timeout" from="Manager_Update" to="." method="_on_manager_update_timeout"]
 
-[editable path="Unit_Parent/BasicUnit4"]
 [editable path="Gui"]
+[editable path="Unit_Parent/BasicUnit4"]

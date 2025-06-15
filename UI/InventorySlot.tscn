@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b8del21khdewg"]
 
-[ext_resource type="Script" path="res://Manager/InventorySlot.gd" id="1_8o2ng"]
+[ext_resource type="Script" uid="uid://csgkaq180qfej" path="res://UI/InventorySlot.gd" id="1_8o2ng"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4fl36"]
 font_size = 40
@@ -37,7 +37,6 @@ offset_left = -40.0
 offset_top = -23.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "13"
 label_settings = SubResource("LabelSettings_4fl36")
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

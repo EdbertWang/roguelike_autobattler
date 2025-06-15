@@ -4,15 +4,17 @@ class_name Inventory
 
 var slots : Array[InventorySlot]
 
-@onready var inventory_grid : Label = $InventoryGrid
+@onready var inventory_grid : GridContainer = $InventoryGrid
 @export var starter_items : Array[Item]
+@export var starter_items_count : Array[int]
 @export var columns : int
 @export var rows : int
 
+@export var slot_autoload : PackedScene 
 
-@onready var slot_autoload : PackedScene = preload("res://Manager/InventorySlot.tscn")
+var can_open_inventory = true
 
-func _ready ():
+func _ready():
 	toggle_window(false)
 	
 	inventory_grid.columns = columns
@@ -20,16 +22,17 @@ func _ready ():
 	for i in columns * rows:
 		var new_slot = slot_autoload.instantiate()
 		slots.append(new_slot)
-		new_slot.set_item(null)
+		new_slot.set_item(null, 0)
 		new_slot.inventory = self
 		inventory_grid.add_child(new_slot)
 
-		
-	for item in starter_items:
-		add_item(item)
+func post_ready():
+	for i in starter_items.size():
+		add_item(starter_items[i],starter_items_count[i] )
 
 func _process (delta):
-	if Input.is_action_just_pressed("inventory"):
+	# TODO: Check if we are in placement mode before allowing this
+	if Input.is_action_just_pressed("inventory") and can_open_inventory:
 		toggle_window(!visible)
 
 func toggle_window (open : bool):
@@ -43,24 +46,25 @@ func toggle_window (open : bool):
 func on_give_player_item (item : Item, amount : int):
 	pass
 
-func add_item (item : Item):
+func add_item (item : Item, count : int):
 	var slot = get_slot_to_add(item)
   
 	if slot == null:
 		return
   
 	if slot.item == null:
-		slot.set_item(item)
+		slot.set_item(item, count)
 	elif slot.item == item:
-		slot.add_item()
+		slot.add_item(count)
 
-func remove_item (item : Item):
+func remove_item (item : Item, count: int) -> bool:
 	var slot = get_slot_to_remove(item)
   
-	if slot == null or slot.item == item:
-		return
+	if slot == null or slot.item == item or slot.quantity < count:
+		return false
   
-	slot.remove_item()
+	slot.remove_item(count)
+	return true
 
 func get_slot_to_add (item : Item) -> InventorySlot:
 	for slot in slots:
