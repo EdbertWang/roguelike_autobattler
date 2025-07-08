@@ -31,9 +31,14 @@ func post_ready():
 			unit_board_space_map[i].append(null)
 	
 	post_ready_check = true
+	
+	# Propagate downwards
+	for i in get_children():
+		if i.has_method("post_ready"):
+			i.post_ready()
 
 func _process(delta):
-	_check_cell()
+	check_cell()
 
 func _input(event: InputEvent):
 	if Input.is_action_just_pressed("leftClick"):
@@ -45,7 +50,10 @@ func _input(event: InputEvent):
 			if removed_unit:
 				remove_from_board(curr_mouse_tile, removed_unit.placement_size)
 
-func _check_cell():
+func check_cell():
+	# Potentially might need to change to work with moving and scaling camera
+	# var eventPosition = get_viewport().canvas_transform.affine_inverse().xform(event.position)
+	
 	var mouse_pos = get_viewport().get_mouse_position()
 	curr_mouse_tile = mouse_pos / Vector2(unit_board.cellWidth, unit_board.cellHeight)
 	
@@ -136,3 +144,7 @@ func remove_from_board(top_corner: Vector2, size: Vector2) -> void:
 		cell.full = false
 
 	bm.remove_unit_from_board(top_corner, size)
+
+func set_current_item(item : PackedScene):
+	#curr_unit = item.
+	pass

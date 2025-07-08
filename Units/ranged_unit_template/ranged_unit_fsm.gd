@@ -51,4 +51,3 @@ func _enter_state(_previous_state: int, new_state: int) -> void:
 		states.dead:
 			sprite.play("die")
 			animation_player.play("dead")
-

@@ -9,6 +9,7 @@ font_size = 40
 custom_minimum_size = Vector2(100, 100)
 size_flags_horizontal = 4
 mouse_filter = 2
+expand_icon = true
 script = ExtResource("1_8o2ng")
 
 [node name="TextureRect" type="TextureRect" parent="."]

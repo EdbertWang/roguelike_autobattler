@@ -1,6 +1,6 @@
 extends Item
-
-const PLACEMENT_TILE_SIZE = 50
+class_name Unit_Card
+#const PLACEMENT_TILE_SIZE = 50
 
 @export var num_units : int
 @export var placement_size : Vector2 

@@ -94,6 +94,8 @@ _data = {
 }
 
 [node name="MeleeUnitTemplate" instance=ExtResource("1_g2lu5")]
+max_hp = 10
+base_speed = 10
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 position = Vector2(1, 0)
@@ -105,7 +107,7 @@ shape = SubResource("CircleShape2D_eggw2")
 
 [node name="AnimationPlayer" parent="." index="2"]
 libraries = {
-"": SubResource("AnimationLibrary_p2yhk")
+&"": SubResource("AnimationLibrary_p2yhk")
 }
 
 [node name="FSM" parent="." index="3"]
@@ -114,4 +116,4 @@ script = ExtResource("2_hcx1d")
 [node name="Melee_Attack" parent="." index="5" instance=ExtResource("4_7836s")]
 script = ExtResource("5_tgfs3")
 attack_range = 30
-damage = 10
+damage = 2

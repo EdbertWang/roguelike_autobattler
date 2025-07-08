@@ -15,6 +15,10 @@ run/main_scene="uid://b2hkuu4ohgbnk"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+ITEM_NAME="*res://LookUps/ITEM_NAME.gd"
+
 [display]
 
 window/size/viewport_width=1920

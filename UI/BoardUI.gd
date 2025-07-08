@@ -44,6 +44,9 @@ func _remove_grid():
 	for node in get_children():
 		node.queue_free()
 
+#func _ready() -> void:
+#	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
 # Pass the grid event to the main gui node
 #func _on_gui_input(event: InputEvent) -> void:
-#	get_parent().get_node("Gui").on_grid_gui_input(event)
+#	get_parent().get_node("GUI").check_cell()

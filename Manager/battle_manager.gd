@@ -7,7 +7,7 @@ var tile_map_size : Vector2i
 @onready var unit_parent = $Unit_Parent
 @onready var flow_gen = $FlowGen
 @onready var target_man = $TargetManager
-@onready var gui = $Gui
+@onready var gui = $GUI
 
 var enemies_tiles : Array[Array]
 var allies_tiles : Array[Array]
