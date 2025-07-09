@@ -146,5 +146,5 @@ func remove_from_board(top_corner: Vector2, size: Vector2) -> void:
 	bm.remove_unit_from_board(top_corner, size)
 
 func set_current_item(item : PackedScene):
-	#curr_unit = item.
-	pass
+	curr_unit = item
+	#pass

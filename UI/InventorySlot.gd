@@ -1,6 +1,7 @@
 extends Button
 class_name InventorySlot
 
+var parent_inventory : Inventory
 var item : PackedScene
 var item_name : String
 var item_inst : Item
@@ -8,6 +9,12 @@ var quantity : int
 @onready var button_icon : TextureRect = $TextureRect
 @onready var quantity_text : Label = $Label
 var inventory : Inventory
+
+func set_slot_visible():
+	set_mouse_filter(Control.MOUSE_FILTER_STOP)
+
+func set_slot_invisible():
+	set_mouse_filter(Control.MOUSE_FILTER_IGNORE)
 
 func set_item (itemID : String, new_item : PackedScene, count : int):
 	if new_item == null:
@@ -57,4 +64,4 @@ func _on_pressed():
 	#if remove_after_use:
 		#remove_item(1)
 	
-	get_parent().set_current_item(item)
+	parent_inventory.set_current_item(item)

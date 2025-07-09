@@ -16,7 +16,7 @@ var can_open_inventory = true
 
 func _ready():
 	toggle_window(false)
-	
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	inventory_grid.columns = columns
 
 	for i in columns * rows:
@@ -27,6 +27,11 @@ func _ready():
 		inventory_grid.add_child(new_slot)
 
 func post_ready():
+	# Give slots a refernce to parent inventory
+	for slot in inventory_grid.get_children():
+		slot.parent_inventory = self
+		
+	# Give initial items
 	for i in starter_items.size():
 		add_item(starter_items[i],starter_items_count[i])
 
@@ -37,11 +42,13 @@ func _process (delta):
 
 func toggle_window (open : bool):
 	visible = open
-  
-	#if open:
-	#	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	#else:
-	#	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+	if visible:
+		for slot in inventory_grid.get_children():
+			slot.set_slot_visible()
+	else:
+		for slot in inventory_grid.get_children():
+			slot.set_slot_invisible()
 
 func on_give_player_item (itemID : String, amount : int):
 	pass
