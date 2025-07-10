@@ -14,6 +14,7 @@ var unit_board_space_map : Array[Array] = [] # Stores references to units on the
 var targetCell
 var objectCells = []
 var curr_unit : PackedScene
+var curr_unit_inst : Item
 var curr_mouse_tile : Vector2
 var isValid = false
 var placement_mode : bool = true # True for placing, false for removing
@@ -60,8 +61,8 @@ func check_cell():
 	var new_target = _get_target_cell(mouse_pos)
 	if new_target and new_target != targetCell:
 		targetCell = new_target
-		if curr_unit:
-			curr_unit.global_position = targetCell.global_position + curr_unit.rect_size / 2
+		if curr_unit_inst:
+			curr_unit_inst.global_position = targetCell.global_position + curr_unit_inst.texture.get_size() * curr_unit_inst.scale / 2
 			_reset_highlight()
 			objectCells = _get_object_cells()
 			isValid = _check_and_highlight_cells(objectCells)
@@ -79,15 +80,15 @@ func _reset_highlight():
 func _get_object_cells() -> Array:
 	var cells = []
 	for cell: Control in unit_board.get_children():
-		if cell.get_global_rect().intersects(Rect2(curr_unit.global_position, curr_unit.rect_size)):
+		if cell.get_global_rect().intersects(Rect2(curr_unit_inst.global_position, curr_unit_inst.texture.get_size() * curr_unit_inst.scale)):
 			cells.append(cell)
 	return cells
 
 func _check_and_highlight_cells(cells: Array) -> bool:
 	var valid = true
 
-	# Optional size-based cell count check
-	var expected_count = int(curr_unit.placement_size.x / unit_board.rect_size.x) * int(curr_unit.placement_size.y / unit_board.rect_size.y)
+	# cell count check - prevents placing units on the edges of the board
+	var expected_count = int(curr_unit_inst.placement_size.x) * int(curr_unit_inst.placement_size.y)
 	if expected_count != cells.size():
 		valid = false
 
@@ -104,9 +105,9 @@ func _place_unit():
 	for cell in objectCells:
 		cell.full = true
 	
-	var grid_pos = unit_board.local_to_map(curr_unit.global_position)
-	place_on_board(grid_pos, curr_unit.placement_size, curr_unit)
-	bm.add_unit_to_board(curr_unit)
+	var grid_pos = unit_board.local_to_map(curr_unit_inst.global_position)
+	place_on_board(grid_pos, curr_unit_inst.placement_size, curr_unit)
+	bm.add_unit_to_board(curr_unit_inst)
 
 	_reset_highlight()
 	curr_unit = null
@@ -146,5 +147,9 @@ func remove_from_board(top_corner: Vector2, size: Vector2) -> void:
 	bm.remove_unit_from_board(top_corner, size)
 
 func set_current_item(item : PackedScene):
+	if curr_unit_inst != null:
+		curr_unit_inst.free()
 	curr_unit = item
+	curr_unit_inst = curr_unit.instantiate()
+	add_child(curr_unit_inst)
 	#pass
