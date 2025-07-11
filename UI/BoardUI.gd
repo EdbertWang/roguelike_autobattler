@@ -38,11 +38,16 @@ func _create_grid():
 	for i in width * height:
 		var gridCellNode = GRID_CELL.instantiate()
 		gridCellNode.custom_minimum_size = Vector2(cellWidth, cellHeight)
+		gridCellNode.board_position = Vector2(i % width, int(i / width))
 		add_child(gridCellNode.duplicate())
 
 func _remove_grid():
 	for node in get_children():
 		node.queue_free()
+
+func post_ready():
+	for i in get_children():
+		i.post_ready()
 
 #func _ready() -> void:
 #	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

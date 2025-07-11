@@ -63,7 +63,8 @@ func check_cell():
 		targetCell = new_target
 		if curr_unit_inst:
 			curr_unit_inst.global_position = targetCell.global_position + curr_unit_inst.texture.get_size() * curr_unit_inst.scale / 2
-			_reset_highlight()
+			if objectCells.size() > 0:
+				_reset_highlight(objectCells)
 			objectCells = _get_object_cells()
 			isValid = _check_and_highlight_cells(objectCells)
 
@@ -73,14 +74,15 @@ func _get_target_cell(mouse_pos):
 			return cell
 	return null
 
-func _reset_highlight():
-	for cell: Control in unit_board.get_children():
+func _reset_highlight(cells : Array):
+	for cell: Control in cells:
 		cell.change_color(Color(0.5, 0.5, 0.5, 0.5))
 
 func _get_object_cells() -> Array:
 	var cells = []
+	var unit_rect : Rect2 = Rect2(curr_unit_inst.global_position, curr_unit_inst.texture.get_size() * curr_unit_inst.scale)
 	for cell: Control in unit_board.get_children():
-		if cell.get_global_rect().intersects(Rect2(curr_unit_inst.global_position, curr_unit_inst.texture.get_size() * curr_unit_inst.scale)):
+		if cell.get_global_rect().intersects(unit_rect):
 			cells.append(cell)
 	return cells
 
@@ -105,11 +107,12 @@ func _place_unit():
 	for cell in objectCells:
 		cell.full = true
 	
-	var grid_pos = unit_board.local_to_map(curr_unit_inst.global_position)
-	place_on_board(grid_pos, curr_unit_inst.placement_size, curr_unit)
-	bm.add_unit_to_board(curr_unit_inst)
+	var grid_pos : Vector2 = objectCells[0].board_position
 
-	_reset_highlight()
+	place_on_board(grid_pos, curr_unit_inst.placement_size, curr_unit)
+	bm.add_unit_to_board(curr_unit)
+
+	_reset_highlight(objectCells)
 	curr_unit = null
 	isValid = false
 
