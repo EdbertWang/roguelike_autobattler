@@ -3,27 +3,27 @@ class_name Unit_Card
 #const PLACEMENT_TILE_SIZE = 50
 
 @export var num_units : int
-@export var placement_size : Vector2 
+@export var placement_size : Vector2
+var rotated_placement_size : Vector2 
 
 @export var related_unit : PackedScene
 
 var placement_vectors : Array
+var rotated_vectors : Array
 
-func _ready():
+func setup_unit():
 	item_type = TYPE.unit_card
 	placement_vectors = divide_grid(num_units)
+	rotated_vectors = get_rotated_placement_vectors()
+	rotated_placement_size = Vector2(placement_size.y, placement_size.x)
 
 
-func get_placement_vectors(rotation : int) -> Array:
-	if rotation == 0:
-		return placement_vectors
-	if rotation == 90:
-		var rot_arr = []
-		for i in placement_vectors:
-			rot_arr.append(Vector2(i.y, i.x))
-		return rot_arr
-	else:
-		return []
+func get_rotated_placement_vectors() -> Array:
+	var rot_arr = []
+	for i in placement_vectors:
+		rot_arr.append(Vector2(i.y, i.x))
+	return rot_arr
+
 
 
 func divide_grid(n: int) -> Array:

@@ -52,10 +52,10 @@ func update_tiles():
 		else: # If unit is an enemy unit
 			enemies_tiles[tile.x][tile.y].append(unit)
  
-func add_unit_to_board(unit_ref : Item, start_position : Vector2) -> void:
+func add_unit_to_board(unit_ref : Item, start_position : Vector2, placement_vectors : Array) -> void:
 	var unit_group : Array = []
-	for unit_pos in unit_ref.placement_vectors:
-		var this_inst = unit_ref.related_unit.instantate()
+	for unit_pos in placement_vectors:
+		var this_inst = unit_ref.related_unit.instantiate()
 		this_inst.position = unit_pos + start_position
 		unit_parent.add_child(this_inst)
 		unit_group.append(this_inst)

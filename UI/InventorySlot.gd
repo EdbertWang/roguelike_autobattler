@@ -24,6 +24,7 @@ func set_item (itemID : String, new_item : PackedScene, count : int):
 	item_name = itemID
 	item = new_item
 	item_inst = item.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
+	item_inst.setup_unit()
 	#add_child(item_inst)
 	quantity = count
 	

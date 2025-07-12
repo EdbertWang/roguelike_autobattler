@@ -22,6 +22,7 @@ var curr_unit_inst : Item
 var curr_mouse_tile : Vector2
 var isValid = false
 var placement_mode : bool = true # True for placing, false for removing
+var rotated_placement : bool = false
 
 func post_ready():
 	bm = get_parent()
@@ -57,9 +58,18 @@ func _input(event: InputEvent):
 			if curr_unit and isValid:
 				_place_unit()
 		else:
+			# TODO: Get starting position of the unit, and its rotation state
 			var removed_unit = get_unit_at_tile(curr_mouse_tile)
 			if removed_unit:
+				# TODO : Determine if the removed unit was rotated, then remove the rotated version
 				remove_from_board(curr_mouse_tile, removed_unit.placement_size)
+	elif Input.is_action_just_pressed("rotatePlacement"):
+		rotated_placement = !rotated_placement
+		
+		# Force cell check to be recomputed
+		targetCell = null
+		check_cell()
+		
 
 func check_cell():
 	# Potentially might need to change to work with moving and scaling camera
@@ -91,9 +101,14 @@ func _reset_highlight(cells : Array):
 func _get_object_cells() -> Array:
 	var cells = []
 	# Size the rectangle to be a bit smaller than 
-	var unit_rect : Rect2 = Rect2(curr_unit_inst.global_position - Vector2(unit_board.cellWidth / 2, unit_board.cellHeight / 2), \
+	var unit_rect : Rect2
+	if rotated_placement:
+		unit_rect = Rect2(curr_unit_inst.global_position - Vector2(unit_board.cellWidth / 2, unit_board.cellHeight / 2), \
+		curr_unit_inst.rotated_placement_size * Vector2(unit_board.cellWidth, unit_board.cellHeight) - Vector2(unit_board.cellWidth / 2, unit_board.cellHeight / 2))
+	else:
+		unit_rect = Rect2(curr_unit_inst.global_position - Vector2(unit_board.cellWidth / 2, unit_board.cellHeight / 2), \
 		curr_unit_inst.placement_size * Vector2(unit_board.cellWidth, unit_board.cellHeight) - Vector2(unit_board.cellWidth / 2, unit_board.cellHeight / 2))
-	
+		
 	# Store for debugging
 	if selector_rect_debug:
 		selector_rect = unit_rect
@@ -126,8 +141,12 @@ func _place_unit():
 	
 	var grid_pos : Vector2 = objectCells[0].board_position
 
-	place_on_board(grid_pos, curr_unit_inst.placement_size, curr_unit)
-	bm.add_unit_to_board(curr_unit_inst, objectCells[0].position)
+	if rotated_placement:
+		place_on_board(grid_pos, curr_unit_inst.rotated_placement_size, curr_unit)
+		bm.add_unit_to_board(curr_unit_inst, objectCells[0].position, curr_unit_inst.rotated_vectors)
+	else:
+		place_on_board(grid_pos, curr_unit_inst.placement_size, curr_unit)
+		bm.add_unit_to_board(curr_unit_inst, objectCells[0].position, curr_unit_inst.placement_vectors)
 
 	_reset_highlight(objectCells)
 	curr_unit = null
