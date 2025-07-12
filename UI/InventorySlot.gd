@@ -64,4 +64,4 @@ func _on_pressed():
 	#if remove_after_use:
 		#remove_item(1)
 	parent_inventory.toggle_window(false)
-	parent_inventory.set_current_item(item)
+	parent_inventory.set_current_item(item, item_inst)

@@ -1,6 +1,10 @@
 extends Control
 @onready var post_ready_check = false
 
+#### DEBUG VARS
+@export var selector_rect_debug : bool = true
+var selector_rect : Rect2
+
 var bm
 var unit_board : GridContainer
 @onready var spell_bar : GridContainer = $SpellBar
@@ -38,8 +42,14 @@ func post_ready():
 		if i.has_method("post_ready"):
 			i.post_ready()
 
+func _draw():
+	if selector_rect_debug:
+		draw_rect(selector_rect, Color.RED, false)
+
 func _process(delta):
 	check_cell()
+	queue_redraw()
+
 
 func _input(event: InputEvent):
 	if Input.is_action_just_pressed("leftClick"):
@@ -80,7 +90,14 @@ func _reset_highlight(cells : Array):
 
 func _get_object_cells() -> Array:
 	var cells = []
-	var unit_rect : Rect2 = Rect2(curr_unit_inst.global_position, curr_unit_inst.texture.get_size() * curr_unit_inst.scale)
+	# Size the rectangle to be a bit smaller than 
+	var unit_rect : Rect2 = Rect2(curr_unit_inst.global_position - Vector2(unit_board.cellWidth / 2, unit_board.cellHeight / 2), \
+		curr_unit_inst.placement_size * Vector2(unit_board.cellWidth, unit_board.cellHeight) - Vector2(unit_board.cellWidth / 2, unit_board.cellHeight / 2))
+	
+	# Store for debugging
+	if selector_rect_debug:
+		selector_rect = unit_rect
+		
 	for cell: Control in unit_board.get_children():
 		if cell.get_global_rect().intersects(unit_rect):
 			cells.append(cell)
@@ -110,7 +127,7 @@ func _place_unit():
 	var grid_pos : Vector2 = objectCells[0].board_position
 
 	place_on_board(grid_pos, curr_unit_inst.placement_size, curr_unit)
-	bm.add_unit_to_board(curr_unit)
+	bm.add_unit_to_board(curr_unit_inst, objectCells[0].position)
 
 	_reset_highlight(objectCells)
 	curr_unit = null
@@ -149,10 +166,6 @@ func remove_from_board(top_corner: Vector2, size: Vector2) -> void:
 
 	bm.remove_unit_from_board(top_corner, size)
 
-func set_current_item(item : PackedScene):
-	if curr_unit_inst != null:
-		curr_unit_inst.free()
+func set_current_item(item : PackedScene, item_inst : Item):
 	curr_unit = item
-	curr_unit_inst = curr_unit.instantiate()
-	add_child(curr_unit_inst)
-	#pass
+	curr_unit_inst = item_inst

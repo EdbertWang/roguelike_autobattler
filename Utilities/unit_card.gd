@@ -9,7 +9,7 @@ class_name Unit_Card
 
 var placement_vectors : Array
 
-func ready():
+func _ready():
 	item_type = TYPE.unit_card
 	placement_vectors = divide_grid(num_units)
 

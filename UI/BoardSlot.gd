@@ -11,6 +11,6 @@ func change_color(color:Color):
 	add_theme_stylebox_override("panel",styleBox)
 
 
-func post_ready():
+func _ready():
 	cell_rect = get_global_rect()
 	change_color(Color(0.5, 0.5, 0.5, 0.5))

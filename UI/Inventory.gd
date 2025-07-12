@@ -103,6 +103,6 @@ func get_number_of_item (itemID : String) -> int:
   
 	return total
 
-func set_current_item(item : PackedScene):
+func set_current_item(item : PackedScene, item_inst : Item):
 	# Pass the item up to the GUI
-	get_parent().set_current_item(item)
+	get_parent().set_current_item(item, item_inst)
