@@ -1,4 +1,5 @@
 extends PanelContainer
+class_name BoardSlot
 
 @export var full = false
 

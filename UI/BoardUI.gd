@@ -36,7 +36,7 @@ func _create_grid():
 	columns = width
 
 	for i in width * height:
-		var gridCellNode = GRID_CELL.instantiate()
+		var gridCellNode : BoardSlot = GRID_CELL.instantiate()
 		gridCellNode.custom_minimum_size = Vector2(cellWidth, cellHeight)
 		gridCellNode.board_position = Vector2(i % width, int(i / width))
 		add_child(gridCellNode.duplicate())

@@ -34,9 +34,9 @@ func divide_grid(n: int) -> Array:
 	# Step 1: Find optimal rows and columns
 	for rows in range(1, int(sqrt(n)) + 1):
 		if n % rows == 0:
-			var cols := n / rows
+			var cols := int(n / rows)
 			var aspect_ratio_grid := placement_size.x / placement_size.y
-			var aspect_ratio_cell :=  1
+			var aspect_ratio_cell :=  cols / rows
 			var aspect_diff : float = abs(log(aspect_ratio_grid) - log(aspect_ratio_cell))
 			
 			if aspect_diff < min_aspect_diff:

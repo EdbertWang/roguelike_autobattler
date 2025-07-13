@@ -8,6 +8,7 @@ var tile_map_size : Vector2i
 @onready var flow_gen = $FlowGen
 @onready var target_man = $TargetManager
 @onready var gui = $GUI
+@onready var board_tiles = $BoardUI
 
 var enemies_tiles : Array[Array]
 var allies_tiles : Array[Array]
@@ -54,9 +55,10 @@ func update_tiles():
  
 func add_unit_to_board(unit_ref : Item, start_position : Vector2, placement_vectors : Array) -> void:
 	var unit_group : Array = []
-	for unit_pos in placement_vectors:
+	for unit_pos : Vector2 in placement_vectors:
 		var this_inst = unit_ref.related_unit.instantiate()
-		this_inst.position = unit_pos + start_position
+		# This assumes the board tiles are square
+		this_inst.position = unit_pos * board_tiles.cellHeight + start_position
 		unit_parent.add_child(this_inst)
 		unit_group.append(this_inst)
 		
