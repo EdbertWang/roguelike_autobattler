@@ -23,7 +23,6 @@ func _ready():
 		var new_slot = slot_autoload.instantiate()
 		slots.append(new_slot)
 		new_slot.set_item("", null, 0)
-		new_slot.inventory = self
 		inventory_grid.add_child(new_slot)
 
 func post_ready():
@@ -103,6 +102,6 @@ func get_number_of_item (itemID : String) -> int:
   
 	return total
 
-func set_current_item(item : PackedScene, item_inst : Item):
+func set_current_item(slot : InventorySlot):
 	# Pass the item up to the GUI
-	get_parent().set_current_item(item, item_inst)
+	get_parent().set_current_item(slot)

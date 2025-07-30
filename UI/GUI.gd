@@ -6,6 +6,7 @@ extends Control
 var selector_rect : Rect2
 
 var bm
+var inventory : Inventory
 var unit_board : GridContainer
 @onready var spell_bar : GridContainer = $SpellBar
 
@@ -19,6 +20,7 @@ var targetCell
 var objectCells = []
 var curr_unit : PackedScene
 var curr_unit_inst : Item
+var curr_inv_slot : InventorySlot
 var curr_mouse_tile : Vector2
 var isValid = false
 var placement_mode : bool = true # True for placing, false for removing
@@ -26,6 +28,7 @@ var rotated_placement : bool = false
 
 func post_ready():
 	bm = get_parent()
+	inventory = get_node("Inventory")
 	unit_board = bm.get_node("BoardUI")
 	unit_board_height = unit_board.height
 	unit_board_width = unit_board.width
@@ -149,8 +152,21 @@ func _place_unit():
 		bm.add_unit_to_board(curr_unit_inst, objectCells[0].position, curr_unit_inst.placement_vectors)
 
 	_reset_highlight(objectCells)
-	curr_unit = null
+
+	# Allow the player to keep placing this unit as long as there still are cards left
+	if curr_inv_slot.remove_item(1) == false:
+		curr_unit = null
+		curr_unit_inst = null
+		if selector_rect_debug:
+			selector_rect = Rect2(0,0,0,0)
+	else:
+		# Visually mark that you cannot keep placing here
+		_check_and_highlight_cells(objectCells)
+		
 	isValid = false
+	
+
+	
 
 # Placement logic using logical grid
 func check_unit_space_availability(top_corner: Vector2, size: Vector2) -> bool:
@@ -185,6 +201,8 @@ func remove_from_board(top_corner: Vector2, size: Vector2) -> void:
 
 	bm.remove_unit_from_board(top_corner, size)
 
-func set_current_item(item : PackedScene, item_inst : Item):
-	curr_unit = item
-	curr_unit_inst = item_inst
+func set_current_item(slot : InventorySlot):
+	curr_inv_slot = slot
+	
+	curr_unit = slot.item
+	curr_unit_inst = slot.item_inst

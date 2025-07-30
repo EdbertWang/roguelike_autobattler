@@ -8,7 +8,6 @@ var item_inst : Item
 var quantity : int
 @onready var button_icon : TextureRect = $TextureRect
 @onready var quantity_text : Label = $Label
-var inventory : Inventory
 
 func set_slot_visible():
 	set_mouse_filter(Control.MOUSE_FILTER_STOP)
@@ -18,7 +17,7 @@ func set_slot_invisible():
 
 func set_item (itemID : String, new_item : PackedScene, count : int):
 	if new_item == null:
-		#button_icon.visible = false
+		item = null
 		return
 		
 	item_name = itemID
@@ -40,13 +39,16 @@ func add_item(count : int):
 	quantity += count
 	update_quantity_text()
 
-func remove_item(count : int):
+func remove_item(count : int) -> bool:
 	quantity -= count
 	if quantity <= 0:
+		
+		button_icon.visible = false
 		set_item("",null,0)
-		return
+		return false
 		
 	update_quantity_text()
+	return true
   
 func update_quantity_text ():
 	if quantity <= 1:
@@ -64,5 +66,6 @@ func _on_pressed():
   
 	#if remove_after_use:
 		#remove_item(1)
+		
 	parent_inventory.toggle_window(false)
-	parent_inventory.set_current_item(item, item_inst)
+	parent_inventory.set_current_item(self)
