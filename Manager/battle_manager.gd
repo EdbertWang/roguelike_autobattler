@@ -61,7 +61,7 @@ func add_unit_to_board(unit_ref : Item, start_position : Vector2, placement_vect
 		this_inst.position = unit_pos * board_tiles.cellHeight + start_position
 		unit_parent.add_child(this_inst)
 		unit_group.append(this_inst)
-		
+		this_inst.post_ready()
 	
 func remove_unit_from_board(top_corner: Vector2, size: Vector2) -> void:
 	var rect := Rect2(top_corner, size)
