@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 ITEM_NAME="*res://LookUps/ITEM_NAME.gd"
+FORMATION_MAP="*res://LookUps/FORMATION_MAP.gd"
 
 [display]
 
