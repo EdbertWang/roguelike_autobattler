@@ -23,6 +23,7 @@ var bm
 #var unit_bitstring_cache = {}
 var recently_seen_units = {}
 var used_tiles = {}
+
 func get_enemy_spawns(stage: int, difficulty: String) -> Array:
 	# Reset spawned tiles
 	used_tiles = {}

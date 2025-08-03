@@ -15,13 +15,13 @@ func draw_field(faction : bool):
 	var flow_field
 	var color
 	if faction:
-		flow_field =  get_parent().bm.flow_gen.friendly_flow
+		flow_field =  get_parent().flow_gen.friendly_flow
 		color = Color(0,255,0)
 	else:
-		flow_field =  get_parent().bm.flow_gen.enemy_flow
+		flow_field =  get_parent().flow_gen.enemy_flow
 		color = Color(255,0,0)
 	
-	var tile_size = get_parent().bm.tile_size
+	var tile_size = get_parent().tile_size
 	
 	for x in flow_field.size():
 		for y in flow_field[0].size():
@@ -38,20 +38,20 @@ func draw_borders(faction : bool):
 	var border
 	var color
 	if faction:
-		border =  get_parent().bm.flow_gen.friendly_border_tiles
+		border =  get_parent().flow_gen.friendly_border_tiles
 		color = Color(0,255,30)
 	else:
-		border =  get_parent().bm.flow_gen.enemy_border_tiles
+		border =  get_parent().flow_gen.enemy_border_tiles
 		color = Color(255,0,30)
 	
-	var tile_size = get_parent().bm.tile_size
+	var tile_size = get_parent().tile_size
 	
 	for b in border:
 		draw_circle(Vector2(tile_size * (b.x + 0.5), tile_size * (b.y + 0.5)), 3, color)
 	
 func draw_grid():
-	var tile_size = get_parent().bm.tile_size
-	var tile_map_size = get_parent().bm.tile_map_size
+	var tile_size = get_parent().tile_size
+	var tile_map_size = get_parent().tile_map_size
 	
 	for x in tile_map_size.x:
 		draw_line(Vector2(x * tile_size, 0), Vector2(x * tile_size, tile_map_size.y * tile_size), Color(0,0,0), 1)

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkofyitbtwadk"]
+
+[ext_resource type="Script" uid="uid://cuso4ib3bh6bh" path="res://Map_Gen/map_manager.gd" id="1_y3ekc"]
+[ext_resource type="PackedScene" uid="uid://bji4ahs5o67mv" path="res://Map_Gen/player_location.tscn" id="2_3sbnt"]
+
+[node name="MapManager" type="Node2D"]
+script = ExtResource("1_y3ekc")
+
+[node name="PlayerLocaiton" parent="." instance=ExtResource("2_3sbnt")]

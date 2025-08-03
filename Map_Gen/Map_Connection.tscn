@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://03bcqhioi2ub"]
+
+[ext_resource type="Script" uid="uid://bwupfcuy677cq" path="res://Map_Gen/map_connection.gd" id="1_no2a5"]
+
+[node name="MapConnection" type="Node2D"]
+script = ExtResource("1_no2a5")

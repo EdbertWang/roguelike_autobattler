@@ -7,11 +7,30 @@ var tile_map_size : Vector2i
 @onready var unit_parent = $Unit_Parent
 @onready var flow_gen = $FlowGen
 @onready var target_man = $TargetManager
-@onready var gui = $GUI
 @onready var board_tiles = $BoardUI
+@onready var enemy_spawner = $Enemy_Spawner
 
 var enemies_tiles : Array[Array]
 var allies_tiles : Array[Array]
+
+func setup_battle(battle_params : Dictionary):
+	"""Generate enemies for the current battle"""
+	if battle_params.has("stage") and battle_params.has("difficulty"):
+		enemy_spawner.get_enemy_spawns(
+			battle_params["stage"],
+			battle_params["difficulty"]
+	)
+	
+func clear_battlefield():
+	"""Clear all units from the battlefield"""
+
+	for child in unit_parent.get_children():
+		child.queue_free()
+		
+	for x in tile_map_size.x:
+		for y in tile_map_size.y:
+			allies_tiles[x][y].clear()
+			enemies_tiles[x][y].clear()
 
 # Triggers after both the manager and all its children have entered the scene
 func _ready():
@@ -24,9 +43,8 @@ func _ready():
 			allies_tiles[x].append([])
 			enemies_tiles[x].append([])
 	
-	#print("Global Ready")
+func post_ready():
 	flow_gen.init_fields()
-	gui.post_ready()
 	for node in unit_parent.get_children():
 		node.post_ready()
 
