@@ -41,31 +41,11 @@ script = ExtResource("2_7x82o")
 
 [node name="Unit_Parent" type="Node" parent="."]
 
-[node name="BasicUnit2" parent="Unit_Parent" instance=ExtResource("2_qhfok")]
-position = Vector2(395, 400)
-script = ExtResource("5_ow4m4")
-max_hp = 30
-base_speed = 40
-faction = true
-
 [node name="BasicUnit" parent="Unit_Parent" instance=ExtResource("2_qhfok")]
 position = Vector2(743, 195)
 script = ExtResource("5_ow4m4")
 max_hp = 30
 base_speed = 40
-
-[node name="BasicUnit3" parent="Unit_Parent" instance=ExtResource("2_qhfok")]
-position = Vector2(124, 439)
-script = ExtResource("5_ow4m4")
-max_hp = 30
-base_speed = 40
-
-[node name="BasicUnit4" parent="Unit_Parent" instance=ExtResource("2_qhfok")]
-position = Vector2(773, 410)
-script = ExtResource("5_ow4m4")
-max_hp = 30
-base_speed = 40
-faction = true
 
 [node name="RangedUnitTemplate" parent="Unit_Parent" instance=ExtResource("6_kbjsa")]
 position = Vector2(263, 218)
@@ -82,4 +62,3 @@ script = ExtResource("9_tj47k")
 [connection signal="timeout" from="Manager_Update" to="." method="_on_manager_update_timeout"]
 
 [editable path="GUI"]
-[editable path="Unit_Parent/BasicUnit4"]

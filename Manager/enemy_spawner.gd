@@ -15,12 +15,18 @@
 
 extends Node
 
+var bm
+
 @export var grid_size := Vector2i(8, 8)
+
 
 #var unit_bitstring_cache = {}
 var recently_seen_units = {}
-
+var used_tiles = {}
 func get_enemy_spawns(stage: int, difficulty: String) -> Array:
+	# Reset spawned tiles
+	used_tiles = {}
+	
 	# Decay spawn probabilities - int rounds down so eventually goes back to zero prob of spawn
 	for u in recently_seen_units.keys():
 		recently_seen_units[u] = int(recently_seen_units[u]/2)
@@ -34,41 +40,62 @@ func get_enemy_spawns(stage: int, difficulty: String) -> Array:
 	# Start filling in the formation with spawns
 	var all_spawn_positions: Array = []
 	var seen_groups = {}
+	
 	for spawn_str in formation:
 		# Parse the formation string to determine what to spawn
 		var parsed := parse_spawn_string(spawn_str)
 		if parsed.is_empty():
 			push_warning("Malformed Spawn String %s" % spawn_str)
 			continue
-		var spawn_pos : = Vector2i(parsed["x"], parsed["y"])
-		var size : = Vector2i(parsed["w"], parsed["h"])
-		var role : int = parsed["role"]
-		var unit_group : int = parsed["group"]
-		var group : Unit_Card
+			
+		var spawn_pos := Vector2i(parsed["x"], parsed["y"]) + grid_size
+		var size := Vector2i(parsed["w"], parsed["h"])
+		var role: int = parsed["role"]
+		var unit_group: int = parsed["group"]
+		var selected_unit_scene: PackedScene
 		
 		# Check if we already have a unit selected for this group
 		if unit_group in seen_groups:
-			group = seen_groups[unit_group].instantiate()
-			
+			selected_unit_scene = seen_groups[unit_group]
 		else: # If not - randomly select a new unit for this group
 			var unit_options := get_unit_by_role_cached(role)
 			if not unit_options:
 				push_warning("Unknown unit role: %s" % role)
 				continue
-			seen_groups[unit_group] = weighted_random_selections(unit_options)
-			group = seen_groups[unit_group].instantiate()
-
-		group.grid_size = size
-		group.roles = [role]
-		group.position = grid_to_world(spawn_pos)
-
-		add_child(group)
-		group.spawn_units()
-
+			selected_unit_scene = weighted_random_selections(unit_options)
+			seen_groups[unit_group] = selected_unit_scene
+		
+		# Check if we have an exact type specified
+		if parsed.has("exact_type"):
+			# Override with the exact unit type if specified
+			selected_unit_scene = ITEM_NAME.item_lookup(parsed["exact_type"])
+			if not selected_unit_scene:
+				push_warning("Unknown exact unit type: %s" % parsed["exact_type"])
+				continue
+		
+		# Get the Item instance to determine placement vectors
+		var unit_item_inst = selected_unit_scene.instantiate()
+		if not unit_item_inst.has_method("get_placement_vectors"):
+			push_warning("Unit doesn't have placement vectors method")
+			unit_item_inst.queue_free()
+			continue
+		
+		# Calculate world position for spawning
+		var world_spawn_pos = bm.grid_to_world(spawn_pos)
+		
+		# Generate placement vectors based on the spawn area size
+		var placement_vectors = unit_item_inst.placement_vectors
+		
+		# Use battle manager's add_unit_to_board function
+		bm.add_unit_to_board(unit_item_inst, world_spawn_pos, placement_vectors)
+		
+		# Clean up the temporary instance
+		unit_item_inst.queue_free()
+		
 		all_spawn_positions.append(spawn_pos)
 	
 	return all_spawn_positions
-
+	
 
 func get_predef_objectives(current_stage: int, enemy_positions: Array, objective_count: int = 3) -> Array:
 	var objectives = []
@@ -160,10 +187,38 @@ func weighted_random_selections(array: Array) -> PackedScene:
 			
 	return null
 
+func post_ready():
+	bm = get_parent()
+	
+
+# Test support variables
+var test_formation_override: Array = []
+var test_mode: bool = false
+
+func set_test_formation(formation: Array):
+	"""Override formation data for testing purposes"""
+	test_formation_override = formation
+	test_mode = true
+
+func clear_test_mode():
+	"""Return to normal formation selection"""
+	test_formation_override.clear()
+	test_mode = false
 
 
 
-func grid_to_world(pos: Vector2i) -> Vector2:
-	# Customize this depending on your tile size
-	var tile_size := 64  # or whatever your tiles are
-	return Vector2(pos.x * tile_size, pos.y * tile_size)
+# Modify your get_enemy_spawns function to use test data when available
+# Replace this section in your existing get_enemy_spawns function:
+
+# Debug method to expose selection information
+func get_last_selections() -> Dictionary:
+	"""Get information about the last spawn selections for testing"""
+	return recently_seen_units.duplicate()
+
+func get_spawn_statistics() -> Dictionary:
+	"""Get statistics about spawning for analysis"""
+	return {
+		"recently_seen_units": recently_seen_units.duplicate(),
+		"used_tiles": used_tiles.duplicate(),
+		"test_mode": test_mode
+	}
