@@ -39,6 +39,7 @@ func post_ready():
 		for j in unit_board_height:
 			unit_board_space_map[i].append(null)
 	
+	# Needed to prevent process from running too soon
 	post_ready_check = true
 	
 	# Propagate downwards

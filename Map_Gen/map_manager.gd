@@ -4,7 +4,7 @@ extends Node2D
 # Generates a graph of connected battle nodes for campaign progression
 
 @export_group("Map Generation")
-@export var map_size := Vector2(1200, 800)
+@export var map_size := DisplayServer.window_get_size()
 @export var node_count := 20
 @export var min_node_distance := 80.0
 @export var max_connections_per_node := 3
