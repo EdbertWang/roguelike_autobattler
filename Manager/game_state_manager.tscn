@@ -13,10 +13,7 @@ script = ExtResource("1_rks66")
 
 [node name="MapManager" parent="." instance=ExtResource("2_rks66")]
 
-[node name="CampaignController" type="Node" parent="." node_paths=PackedStringArray("map_generator", "battle_manager")]
+[node name="CampaignController" type="Node" parent="."]
 script = ExtResource("4_bffvo")
-map_generator = NodePath("../MapManager")
-battle_manager = NodePath("../BattleManager")
 
-[node name="Gui" parent="." node_paths=PackedStringArray("bm") instance=ExtResource("5_4wcpc")]
-bm = NodePath("../BattleManager")
+[node name="Gui" parent="." instance=ExtResource("5_4wcpc")]

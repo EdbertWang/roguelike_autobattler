@@ -45,7 +45,6 @@ var NODE_COLORS = {
 ######### MANAGER CODE ########
 
 func _ready():
-	generate_map()
 	
 	# Connect player movement signal if player sprite exists
 	if player_sprite and player_sprite.has_signal("done_moving"):
@@ -55,6 +54,9 @@ func _ready():
 	if start_node and player_sprite:
 		if player_sprite.has_method("set_pos"):
 			player_sprite.set_pos(start_node.position)
+
+func post_ready():
+	generate_map()
 
 func _draw():
 	draw_map()

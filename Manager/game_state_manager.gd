@@ -20,9 +20,6 @@ func _ready():
 	# Connect UI signals
 	setup_ui_connections()
 	
-	# Start new campaign
-	campaign_controller.start_new_campaign()
-	
 	#Sync all children to post ready state
 	post_ready()
 
@@ -43,6 +40,11 @@ func _on_campaign_completed():
 	print("Campaign completed!")
 
 func post_ready():
+	
 	for i in get_children():
 		if i.has_method("post_ready"):
 			i.post_ready()
+
+	# wait till everything has called post_ready then
+	# Start new campaign
+	campaign_controller.start_new_campaign()

@@ -5,7 +5,7 @@ extends Control
 @export var selector_rect_debug : bool = true
 var selector_rect : Rect2
 
-@export var bm : Node2D
+var bm : Node2D
 var inventory : Inventory
 var unit_board : GridContainer
 @onready var spell_bar : GridContainer = $SpellBar
@@ -27,6 +27,7 @@ var placement_mode : bool = true # True for placing, false for removing
 var rotated_placement : bool = false
 
 func post_ready():
+	bm = get_parent().battle_manager
 	inventory = get_node("Inventory")
 	unit_board = bm.get_node("BoardUI")
 	unit_board_height = unit_board.height
@@ -50,8 +51,9 @@ func _draw():
 		draw_rect(selector_rect, Color.RED, false)
 
 func _process(delta):
-	check_cell()
-	queue_redraw()
+	if post_ready_check:
+		check_cell()
+		queue_redraw()
 
 
 func _input(event: InputEvent):

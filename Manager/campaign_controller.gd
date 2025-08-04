@@ -3,8 +3,8 @@ extends Node
 # Campaign Controller
 # Manages the flow between map exploration and battle execution
 
-@export var map_generator: Node2D
-@export var battle_manager: Node2D  
+var map_generator: Node2D
+var battle_manager: Node2D  
 
 enum GameState {
 	MAP_EXPLORATION,
@@ -22,10 +22,16 @@ signal battle_started(node: MapNode)
 signal battle_completed(node: MapNode, victory: bool)
 signal campaign_completed()
 
-func _ready():
+func post_ready():
+	map_generator = get_parent().map_generator
+	battle_manager = get_parent().battle_manager
+	
 	connect_systems()
 	change_state(GameState.MAP_EXPLORATION)
 	
+	for i in self.get_children():
+		if i.has_method("post_ready"):
+			i.post_ready()
 
 func connect_systems():
 	"""Connect all system signals and references"""
@@ -75,7 +81,7 @@ func enable_map_interaction():
 		battle_manager.set_process(false)
 		battle_manager.hide()
 	
-	print("Map exploration enabled. Available nodes: %d" % map_generator.get_available_nodes().size())
+	#print("Map exploration enabled. Available nodes: %d" % map_generator.get_available_nodes().size())
 
 func _on_map_node_selected(node: MapNode):
 	"""Handle when player selects a map node"""
