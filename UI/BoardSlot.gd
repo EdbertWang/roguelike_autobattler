@@ -6,6 +6,9 @@ class_name BoardSlot
 var board_position : Vector2
 var cell_rect : Rect2
 
+func set_board_position(bp : Vector2):
+	board_position = bp
+
 func change_color(color:Color):
 	var styleBox := get_theme_stylebox("panel").duplicate()
 	styleBox.bg_color = color

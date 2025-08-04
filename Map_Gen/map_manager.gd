@@ -55,8 +55,8 @@ func _ready():
 		if player_sprite.has_method("set_pos"):
 			player_sprite.set_pos(start_node.position)
 
-func post_ready():
-	generate_map()
+#func post_ready():
+#	generate_map()
 
 func _draw():
 	draw_map()

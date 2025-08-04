@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://b2hkuu4ohgbnk"]
+[gd_scene load_steps=10 format=3 uid="uid://b2hkuu4ohgbnk"]
 
 [ext_resource type="Script" uid="uid://cuad6lpso0q62" path="res://Manager/battle_manager.gd" id="1_c6fe6"]
 [ext_resource type="Script" uid="uid://hqlphn02kabu" path="res://UI/FlowGen.gd" id="1_i8jx7"]
 [ext_resource type="Script" uid="uid://dxavhucjkx8u3" path="res://Manager/TargetManager.gd" id="2_7x82o"]
 [ext_resource type="PackedScene" uid="uid://cpeerva01chph" path="res://Units/melee_unit_template/MeleeUnitTemplate.tscn" id="2_qhfok"]
 [ext_resource type="PackedScene" uid="uid://dvin2a62ufrm8" path="res://UI/BoardUI.tscn" id="3_vbtom"]
-[ext_resource type="PackedScene" uid="uid://dy1rgpvj3afyd" path="res://UI/GUI.tscn" id="5_m15cc"]
 [ext_resource type="Script" uid="uid://bpck23uarryp" path="res://Units/melee_unit_template/melee_unit_template.gd" id="5_ow4m4"]
 [ext_resource type="PackedScene" uid="uid://dntchg7qjone2" path="res://Units/ranged_unit_template/RangedUnitTemplate.tscn" id="6_kbjsa"]
 [ext_resource type="Script" uid="uid://bqo443bjdc1tg" path="res://Manager/enemy_spawner.gd" id="9_tj47k"]
@@ -24,12 +23,6 @@ width = 30
 height = 30
 cellWidth = 50
 cellHeight = 50
-
-[node name="GUI" parent="." instance=ExtResource("5_m15cc")]
-
-[node name="Inventory" parent="GUI" index="0"]
-starter_items = Array[String](["four_melee"])
-starter_items_count = Array[int]([3])
 
 [node name="FlowGen" type="Node" parent="." groups=["FLOWGEN"]]
 script = ExtResource("1_i8jx7")
@@ -65,5 +58,3 @@ wait_time = 0.5
 
 [connection signal="timeout" from="Manager_Update" to="." method="_on_manager_update_timeout"]
 [connection signal="timeout" from="flow_visualizer/Redraw_Timer" to="flow_visualizer" method="_on_redraw_timer_timeout"]
-
-[editable path="GUI"]

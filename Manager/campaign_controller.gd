@@ -27,7 +27,6 @@ func post_ready():
 	battle_manager = get_parent().battle_manager
 	
 	connect_systems()
-	change_state(GameState.MAP_EXPLORATION)
 	
 	for i in self.get_children():
 		if i.has_method("post_ready"):
