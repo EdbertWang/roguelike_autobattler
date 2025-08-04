@@ -60,6 +60,10 @@ script = ExtResource("9_tj47k")
 [node name="flow_visualizer" type="Node2D" parent="."]
 script = ExtResource("10_lsjgq")
 
+[node name="Redraw_Timer" type="Timer" parent="flow_visualizer"]
+wait_time = 0.5
+
 [connection signal="timeout" from="Manager_Update" to="." method="_on_manager_update_timeout"]
+[connection signal="timeout" from="flow_visualizer/Redraw_Timer" to="flow_visualizer" method="_on_redraw_timer_timeout"]
 
 [editable path="GUI"]

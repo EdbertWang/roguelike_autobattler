@@ -27,7 +27,6 @@ var placement_mode : bool = true # True for placing, false for removing
 var rotated_placement : bool = false
 
 func post_ready():
-	bm = get_parent().battle_manager
 	inventory = get_node("Inventory")
 	unit_board = bm.get_node("BoardUI")
 	unit_board_height = unit_board.height

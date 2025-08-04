@@ -9,13 +9,18 @@ enum Total_State {
 }
 
 @onready var campaign_controller = $CampaignController
-@onready var map_generator = $MapGenerator
+@onready var map_generator = $MapManager
 @onready var battle_manager = $BattleManager
+@onready var gui = $Gui
 
 func _ready():
 	# Connect systems
 	campaign_controller.map_generator = map_generator
 	campaign_controller.battle_manager = battle_manager
+	
+	gui.bm = battle_manager
+	
+	
 	
 	# Connect UI signals
 	setup_ui_connections()
