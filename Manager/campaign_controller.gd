@@ -19,7 +19,7 @@ var current_state: GameState = GameState.MAP_EXPLORATION
 var current_battle_node: MapNode
 
 signal state_changed(new_state: GameState)
-signal battle_started(node: MapNode)
+#signal battle_started(node: MapNode)
 signal battle_completed(node: MapNode, victory: bool)
 signal campaign_completed()
 
@@ -74,17 +74,16 @@ func change_state(new_state: GameState):
 
 func enable_map_interaction():
 	"""Enable map interaction and disable battle systems"""
-	if map_generator:
-		map_generator.set_process_input(true)
-		map_generator.show()
-	
-	if battle_manager:
-		battle_manager.set_process(false)
-		battle_manager.hide()
-	
-	#print("Map exploration enabled. Available nodes: %d" % map_generator.get_available_nodes().size())
 
-func _on_map_node_selected(node: MapNode):
+	map_generator.set_process_input(true)
+	map_generator.show()
+	
+	battle_manager.set_process(false)
+	battle_manager.hide()
+	
+	print("Map exploration enabled. Available nodes: %d" % map_generator.get_available_nodes().size())
+
+func on_map_node_selected(node: MapNode):
 	"""Handle when player selects a map node"""
 	if current_state != GameState.MAP_EXPLORATION:
 		return
@@ -149,7 +148,7 @@ func _end_prep_phase():
 func start_battle_sequence():
 	"""Start the actual battle"""
 	print("Battle started at node %d" % current_battle_node.id)
-	battle_started.emit(current_battle_node)
+	#battle_started.emit(current_battle_node)
 	
 	# Start battle systems
 	if battle_manager and battle_manager.has_method("start_battle"):

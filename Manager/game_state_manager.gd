@@ -20,15 +20,18 @@ func _ready():
 func setup_ui_connections():
 	# Connect campaign controller signals to UI
 	campaign_controller.state_changed.connect(_on_game_state_changed)
-	campaign_controller.battle_started.connect(_on_battle_started)
+	#campaign_controller.battle_started.connect(_on_battle_started)
 	campaign_controller.campaign_completed.connect(_on_campaign_completed)
 
+	map_generator.enter_battle.connect(_on_battle_entered)
+	
 func _on_game_state_changed(new_state):
 	print("Game state: " + str(new_state))
 	# Update UI based on state
 
-func _on_battle_started(node):
-	print("Battle started at node: " + str(node.id))
+func _on_battle_entered(node):
+	print("Battle entered at node: " + str(node.id))
+	campaign_controller.on_map_node_selected(node)
 
 func _on_campaign_completed():
 	print("Campaign completed!")

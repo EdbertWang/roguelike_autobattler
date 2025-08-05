@@ -26,8 +26,3 @@ rows = 10
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="Map" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0

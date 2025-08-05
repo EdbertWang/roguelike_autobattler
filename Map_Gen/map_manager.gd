@@ -42,6 +42,9 @@ var NODE_COLORS = {
 	"available": Color.CYAN
 }
 
+# Signals
+signal enter_battle(node: MapNode)
+
 ######### MANAGER CODE ########
 
 func _ready():
@@ -64,20 +67,11 @@ func _draw():
 func generate_map():
 	"""Generate the complete map graph"""
 	print("Generating map graph...")
-	
-	# Step 1: Generate random node positions
+
 	generate_nodes()
-	
-	# Step 2: Connect nodes to nearest neighbors
 	connect_nearest_neighbors()
-	
-	# Step 3: Identify start and end nodes
 	identify_start_end_nodes()
-	
-	# Step 4: Calculate difficulty progression
 	calculate_difficulty_progression()
-	
-	# Step 5: Set initial availability
 	update_node_availability()
 	
 	print("Map generation complete. Nodes: %d, Connections: %d" % [nodes.size(), connections.size()])
@@ -260,13 +254,14 @@ func start_battle_at_node(node: MapNode):
 		push_warning("Attempted to start battle at unavailable node")
 		return
 	
-	
 	print("Starting battle at node %d (Stage: %d, Difficulty: %s)" % [node.id, node.stage, node.difficulty])
-	
 	current_node = node
 	
 	# Update visual
 	queue_redraw()
+	
+	# Update other nodes
+	enter_battle.emit(node)
 
 func complete_current_battle():
 	"""Mark current battle as completed and update availability"""
