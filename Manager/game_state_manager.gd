@@ -9,7 +9,6 @@ enum GameState {
 	CAMPAIGN_COMPLETE
 }
 
-@onready var campaign_controller = $CampaignController
 @onready var map_generator = $MapManager
 @onready var battle_manager = $BattleManager
 @onready var gui = $Gui

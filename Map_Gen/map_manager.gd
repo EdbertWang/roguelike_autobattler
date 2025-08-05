@@ -30,7 +30,7 @@ var completed_nodes: Array[MapNode] = []
 
 # Player movement state
 var is_player_moving := false
-var pending_battle_node: MapNode
+var pending_node: MapNode
 
 # Visual colors
 var NODE_COLORS = {
@@ -48,7 +48,6 @@ signal selected_node(node: MapNode)
 ######### MANAGER CODE ########
 
 func _ready():
-	
 	# Connect player movement signal if player sprite exists
 	if player_sprite and player_sprite.has_signal("done_moving"):
 		player_sprite.done_moving.connect(_on_player_movement_finished)
@@ -165,7 +164,8 @@ func identify_start_end_nodes():
 	
 	# Set node types
 	start_node.node_type = "start"
-	start_node.available = true
+	start_node.completed = true
+	completed_nodes.append(start_node)
 	current_node = start_node
 	
 	end_node.node_type = "end"
@@ -208,10 +208,6 @@ func update_node_availability():
 	for node in nodes:
 		node.available = false
 	
-	# Start node is always available initially
-	if start_node:
-		start_node.available = true
-	
 	# Make nodes connected to completed nodes available
 	for completed_node in completed_nodes:
 		for connected_node in completed_node.connections:
@@ -226,10 +222,18 @@ func _on_player_movement_finished():
 	"""Called when player finishes moving to a node"""
 	is_player_moving = false
 	
-	if pending_battle_node:
-		# Player has reached the node, now start the battle
-		start_battle_at_node(pending_battle_node)
-		pending_battle_node = null
+	if pending_node and pending_node.available:
+		# Player has reached the node, now update other nodes
+		current_node = pending_node
+		
+		queue_redraw()
+		
+		# Update other nodes
+		selected_node.emit(pending_node)
+		pending_node = null
+	else: 
+		push_warning("Attempted to start battle at unavailable node")
+
 
 func move_player_to_node(target_node: MapNode):
 	"""Move player sprite to specified node"""
@@ -248,28 +252,13 @@ func move_player_to_node(target_node: MapNode):
 # BATTLE INTEGRATION
 # =============================================================================
 
-func start_battle_at_node(node: MapNode):
-	"""Start a battle at the specified node using the enemy spawner"""
-	if not node.available:
-		push_warning("Attempted to start battle at unavailable node")
-		return
-	
-	print("Starting battle at node %d (Stage: %d, Difficulty: %s)" % [node.id, node.stage, node.difficulty])
-	current_node = node
-	
-	# Update visual
-	queue_redraw()
-	
-	# Update other nodes
-	selected_node.emit(node)
-
-func complete_current_battle():
-	"""Mark current battle as completed and update availability"""
+func complete_node():
+	"""Mark current node as completed and update availability"""
 	if not current_node:
-		push_warning("No current battle to complete")
+		push_warning("No node to complete")
 		return
 	
-	print("Battle completed at node %d" % current_node.id)
+	print("Completed node %d" % current_node.id)
 	
 	current_node.completed = true
 	completed_nodes.append(current_node)
@@ -362,17 +351,17 @@ func handle_node_click(click_position: Vector2):
 	
 	for node in nodes:
 		if click_position.distance_to(node.position) <= node_radius:
-			if node.available and not node.completed:
+			if node.available:
 				# Check if player needs to move first
-				if player_sprite and current_node != node:
+				if player_sprite and is_player_moving == false:
 					# Player needs to move to this node first
-					pending_battle_node = node
+					pending_node = node
 					move_player_to_node(node)
-				else:
-					# Player is already at this node or no player sprite
-					start_battle_at_node(node)
+				elif current_node != node: # Handle revisiting current node case
+					move_player_to_node(node)
+				
 			else:
-				print("Node %d is not available for battle" % node.id)
+				print("Node %d is available to visit" % node.id)
 			break
 
 # =============================================================================
