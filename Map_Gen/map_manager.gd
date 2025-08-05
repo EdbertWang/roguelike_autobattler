@@ -43,7 +43,7 @@ var NODE_COLORS = {
 }
 
 # Signals
-signal enter_battle(node: MapNode)
+signal selected_node(node: MapNode)
 
 ######### MANAGER CODE ########
 
@@ -261,7 +261,7 @@ func start_battle_at_node(node: MapNode):
 	queue_redraw()
 	
 	# Update other nodes
-	enter_battle.emit(node)
+	selected_node.emit(node)
 
 func complete_current_battle():
 	"""Mark current battle as completed and update availability"""
