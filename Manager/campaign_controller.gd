@@ -5,6 +5,7 @@ extends Node
 
 var map_generator: Node2D
 var battle_manager: Node2D  
+var gui : Control
 
 enum GameState {
 	MAP_EXPLORATION,
@@ -25,6 +26,7 @@ signal campaign_completed()
 func post_ready():
 	map_generator = get_parent().map_generator
 	battle_manager = get_parent().battle_manager
+	gui = get_parent().gui
 	
 	connect_systems()
 	
@@ -113,31 +115,32 @@ func prepare_battle():
 
 func setup_battle_environment():
 	"""Setup the battle environment for the current node"""
-	if battle_manager:
-		battle_manager.show()
-		battle_manager.set_process(true)
-		
-		# Clear any existing units
-		battle_manager.clear_battlefield()
-		
-		# Setup battle-specific parameters based on node
-		battle_manager.setup_battle({
-			"stage": current_battle_node.stage,
-			"difficulty": current_battle_node.difficulty,
-			"node_type": current_battle_node.node_type
-		})
+	battle_manager.show()
+	battle_manager.set_process(true)
 	
+	# Clear any existing units
+	battle_manager.clear_battlefield()
+	
+	# Setup battle-specific parameters based on node
+	battle_manager.setup_battle({
+		"stage": current_battle_node.stage,
+		"difficulty": current_battle_node.difficulty,
+		"node_type": current_battle_node.node_type
+	})
+	
+	gui.deployment_mode = false
+
 	# Hide map during battle
-	if map_generator:
-		map_generator.hide()
-		map_generator.set_process_input(false)
+	map_generator.hide()
+	map_generator.set_process_input(false)
 
 func _end_prep_phase():
 	# Create breif countdown to 
 	await get_tree().create_timer(1.0).timeout
 	change_state(GameState.BATTLE_ACTIVE)
 	
-	# TODO: Talk to GUI to disable inventory, 
+	# TODO: Talk to GUI to disable inventory,
+	gui.deployment_mode = false
 
 # =============================================================================
 # BATTLE ACTIVE STATE

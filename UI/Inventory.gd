@@ -35,7 +35,6 @@ func post_ready():
 		add_item(starter_items[i],starter_items_count[i])
 
 func _process (delta):
-	# TODO: Check if we are in placement mode before allowing this
 	if Input.is_action_just_pressed("inventory") and can_open_inventory:
 		toggle_window(!visible)
 

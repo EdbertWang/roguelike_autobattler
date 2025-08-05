@@ -5,7 +5,7 @@ extends Control
 @export var selector_rect_debug : bool = true
 var selector_rect : Rect2
 
-var bm : Node2D
+var battle_manager : Node2D
 var inventory : Inventory
 var unit_board : GridContainer
 @onready var spell_bar : GridContainer = $SpellBar
@@ -16,6 +16,9 @@ var unit_board_width : int
 var unit_board_space_map : Array[Array] = [] # Stores references to units on the board
 
 # Store these state variables in globals since they are required by the input events
+
+# Variables related to unit placement when in deployment stage
+var deployment_mode : bool = false
 var targetCell
 var objectCells = []
 var curr_unit : PackedScene
@@ -27,8 +30,9 @@ var placement_mode : bool = true # True for placing, false for removing
 var rotated_placement : bool = false
 
 func post_ready():
+	battle_manager = get_parent().battle_manager
 	inventory = get_node("Inventory")
-	unit_board = bm.get_node("BoardUI")
+	unit_board = battle_manager.get_node("BoardUI")
 	unit_board_height = unit_board.height
 	unit_board_width = unit_board.width
 	
@@ -57,7 +61,8 @@ func _process(delta):
 
 
 func _input(event: InputEvent):
-	if Input.is_action_just_pressed("leftClick"):
+	# Allow placement only if we are currently in deployment mode
+	if Input.is_action_just_pressed("leftClick") and deployment_mode:
 		if placement_mode:
 			if curr_unit and isValid:
 				_place_unit()
@@ -67,13 +72,23 @@ func _input(event: InputEvent):
 			if removed_unit:
 				# TODO : Determine if the removed unit was rotated, then remove the rotated version
 				remove_from_board(curr_mouse_tile, removed_unit.placement_size)
+		
+		
 	elif Input.is_action_just_pressed("rotatePlacement"):
 		rotated_placement = !rotated_placement
 		
 		# Force cell check to be recomputed
 		targetCell = null
 		check_cell()
+
+# 
+func toggle_inventory(can_use_inventory : bool):
+	if can_use_inventory == true:
+		inventory.can_open_inventory = true
 		
+	else:
+		inventory.can_open_inventory = false
+		inventory.toggle_window(false)
 
 func check_cell():
 	# Potentially might need to change to work with moving and scaling camera
@@ -147,10 +162,10 @@ func _place_unit():
 
 	if rotated_placement:
 		place_on_board(grid_pos, curr_unit_inst.rotated_placement_size, curr_unit)
-		bm.add_unit_to_board(curr_unit_inst, objectCells[0].position, curr_unit_inst.rotated_vectors)
+		battle_manager.add_unit_to_board(curr_unit_inst, objectCells[0].position, curr_unit_inst.rotated_vectors)
 	else:
 		place_on_board(grid_pos, curr_unit_inst.placement_size, curr_unit)
-		bm.add_unit_to_board(curr_unit_inst, objectCells[0].position, curr_unit_inst.placement_vectors)
+		battle_manager.add_unit_to_board(curr_unit_inst, objectCells[0].position, curr_unit_inst.placement_vectors)
 
 	_reset_highlight(objectCells)
 
@@ -167,7 +182,6 @@ func _place_unit():
 	isValid = false
 	
 
-	
 
 # Placement logic using logical grid
 func check_unit_space_availability(top_corner: Vector2, size: Vector2) -> bool:
@@ -200,7 +214,7 @@ func remove_from_board(top_corner: Vector2, size: Vector2) -> void:
 	for cell in _get_object_cells():
 		cell.full = false
 
-	bm.remove_unit_from_board(top_corner, size)
+	battle_manager.remove_unit_from_board(top_corner, size)
 
 func set_current_item(slot : InventorySlot):
 	curr_inv_slot = slot

@@ -1,12 +1,9 @@
 # MainGame.gd
 extends Node
 
-enum Total_State {
-	MAIN_MENU,
-	PLAYING,
-	PAUSED,
-	CLEANUP
-}
+# This script will mainly work as a way to connect all the different component managers to each other
+# Usage is close to a global signal bus
+# Actual State control will be done by the campaign controller
 
 @onready var campaign_controller = $CampaignController
 @onready var map_generator = $MapManager
@@ -14,14 +11,6 @@ enum Total_State {
 @onready var gui = $Gui
 
 func _ready():
-	# Connect systems
-	campaign_controller.map_generator = map_generator
-	campaign_controller.battle_manager = battle_manager
-	
-	gui.bm = battle_manager
-	
-	
-	
 	# Connect UI signals
 	setup_ui_connections()
 	

@@ -101,7 +101,3 @@ func _on_manager_update_timeout():
 	
 	# Reset targetting component
 	target_man.reset_cache()
-
-
-func _on_redraw_timer_timeout() -> void:
-	pass # Replace with function body.
