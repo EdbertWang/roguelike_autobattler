@@ -9,9 +9,12 @@ var tile_map_size : Vector2i
 @onready var target_man = $TargetManager
 @onready var board_tiles = $BoardUI
 @onready var enemy_spawner = $Enemy_Spawner
+@onready var manager_timer = $Manager_Update
 
 var enemies_tiles : Array[Array]
 var allies_tiles : Array[Array]
+
+signal battle_ended(victory : bool)
 
 func setup_battle(battle_params : Dictionary):
 	"""Generate enemies for the current battle"""
@@ -32,6 +35,16 @@ func clear_battlefield():
 			allies_tiles[x][y].clear()
 			enemies_tiles[x][y].clear()
 
+func start_battle():
+	manager_timer.start()
+	# TODO: FOR DEBUGGING THIS JUST IMMEDIATELY ENDS THE BATTLE
+	end_battle()
+
+func end_battle():
+	manager_timer.stop()
+	# TODO: Add way to calculate if the player won or lost
+	battle_ended.emit(true)
+	
 # Triggers after both the manager and all its children have entered the scene
 func _ready():
 	# Initalize the 2D arrays for enemies and allies

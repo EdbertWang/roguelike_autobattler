@@ -1,11 +1,14 @@
 extends Node2D
 
+@onready var sprite : Sprite2D = $Sprite2D
+
 signal done_moving
 
 var tween: Tween
 
 func _ready() -> void:
-	pass
+	# TODO: Scale sprite based on map and screen size
+	sprite.scale = Vector2(0.5,0.5)
 
 func move_to(pos_to_move_to: Vector2) -> void:
 	# Kill any existing tween

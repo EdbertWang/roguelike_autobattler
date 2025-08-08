@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://bji4ahs5o67mv"]
+[gd_scene load_steps=3 format=3 uid="uid://bji4ahs5o67mv"]
 
 [ext_resource type="Script" uid="uid://b5mlrvxhamjrd" path="res://Map_Gen/player_location.gd" id="1_wdvaf"]
+[ext_resource type="Texture2D" uid="uid://dccrvoiuxtr17" path="res://icon.svg" id="2_x2dj8"]
 
 [node name="PlayerLocation" type="Node2D"]
 script = ExtResource("1_wdvaf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_x2dj8")

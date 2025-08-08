@@ -31,7 +31,6 @@ script = ExtResource("2_7x82o")
 
 [node name="Manager_Update" type="Timer" parent="."]
 wait_time = 0.1
-autostart = true
 
 [node name="Enemy_Spawner" type="Node" parent="."]
 script = ExtResource("9_tj47k")

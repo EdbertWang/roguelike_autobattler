@@ -26,3 +26,13 @@ rows = 10
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="End_Prep" type="Button" parent="."]
+layout_mode = 0
+offset_left = 535.0
+offset_top = 445.0
+offset_right = 719.0
+offset_bottom = 480.0
+text = "End Preperation Phase"
+
+[connection signal="pressed" from="End_Prep" to="." method="_on_end_prep_pressed"]

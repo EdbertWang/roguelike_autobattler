@@ -214,6 +214,10 @@ func update_node_availability():
 			if not connected_node.completed:
 				connected_node.available = true
 
+func complete_current_battle():
+	current_node.completed = true
+	completed_nodes.append(current_node)
+
 # =============================================================================
 # PLAYER MOVEMENT
 # =============================================================================

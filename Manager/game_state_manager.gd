@@ -124,7 +124,7 @@ func setup_battle_environment():
 		"node_type": current_battle_node.node_type
 	})
 	
-	gui.deployment_mode = true
+	gui.start_prep_phase()
 
 	# Hide map during battle
 	map_generator.hide()
@@ -134,9 +134,7 @@ func _end_prep_phase():
 	# Create breif countdown to 
 	await get_tree().create_timer(1.0).timeout
 	change_state(GameState.BATTLE_ACTIVE)
-	
-	# TODO: Talk to GUI to disable inventory,
-	gui.deployment_mode = false
+
 
 # =============================================================================
 # BATTLE ACTIVE STATE
