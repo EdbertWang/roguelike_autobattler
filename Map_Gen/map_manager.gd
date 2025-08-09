@@ -192,11 +192,11 @@ func calculate_difficulty_progression():
 		
 		# Assign difficulty based on stage
 		if stage <= 3:
-			node.difficulty = "easy"
+			node.difficulty = "light"
 		elif stage <= 6:
 			node.difficulty = "medium"
 		else:
-			node.difficulty = "hard"
+			node.difficulty = "heavy"
 		
 		# Add connected nodes to queue
 		for connected_node in node.connections:
