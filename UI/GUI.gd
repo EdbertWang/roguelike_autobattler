@@ -6,7 +6,7 @@ extends Control
 var selector_rect : Rect2
 
 #### NODE REFERENCES
-var battle_manager : Node2D
+@export var battle_manager : Node2D
 var inventory : Inventory
 var unit_board : GridContainer
 @onready var spell_bar : GridContainer = $SpellBar
@@ -36,7 +36,6 @@ var rotated_placement : bool = false
 signal preperation_ended
 
 func post_ready():
-	battle_manager = get_parent().battle_manager
 	inventory = get_node("Inventory")
 	unit_board = battle_manager.get_node("BoardUI")
 	unit_board_height = unit_board.height

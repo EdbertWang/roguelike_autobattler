@@ -9,9 +9,13 @@ enum GameState {
 	CAMPAIGN_COMPLETE
 }
 
-@onready var map_generator = $MapManager
+
+
+
 @onready var battle_manager = $BattleManager
-@onready var gui = $Gui
+@onready var viewport = $Viewport
+@onready var gui = $Viewport/Gui
+@onready var map_generator = $MapManager
 
 var current_state: GameState = GameState.MAP_EXPLORATION
 var current_battle_node: MapNode
@@ -238,6 +242,7 @@ func show_campaign_victory():
 	"""Show campaign victory screen"""
 	print("Showing campaign victory screen")
 	# Implement your victory screen UI here
+
 
 # =============================================================================
 # PUBLIC INTERFACE

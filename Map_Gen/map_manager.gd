@@ -52,10 +52,10 @@ func _ready():
 	if player_sprite and player_sprite.has_signal("done_moving"):
 		player_sprite.done_moving.connect(_on_player_movement_finished)
 	
-	# Position player at start node initially
+	# global_position player at start node initially
 	if start_node and player_sprite:
 		if player_sprite.has_method("set_pos"):
-			player_sprite.set_pos(start_node.position)
+			player_sprite.set_pos(start_node.global_position)
 
 #func post_ready():
 #	generate_map()
@@ -77,31 +77,31 @@ func generate_map():
 	queue_redraw()
 
 func generate_nodes():
-	"""Generate randomly positioned nodes with minimum distance constraints"""
+	"""Generate randomly global_positioned nodes with minimum distance constraints"""
 	nodes.clear()
 	
 	for i in range(node_count):
 		var attempts = 0
 		var max_attempts = 100
-		var valid_position = false
-		var new_position: Vector2
+		var valid_global_position = false
+		var new_global_position: Vector2
 		
-		while not valid_position and attempts < max_attempts:
-			new_position = Vector2(
+		while not valid_global_position and attempts < max_attempts:
+			new_global_position = Vector2(
 				randf_range(node_radius, map_size.x - node_radius),
 				randf_range(node_radius, map_size.y - node_radius)
 			)
 			
-			valid_position = true
+			valid_global_position = true
 			for existing_node in nodes:
-				if new_position.distance_to(existing_node.position) < min_node_distance:
-					valid_position = false
+				if new_global_position.distance_to(existing_node.global_position) < min_node_distance:
+					valid_global_position = false
 					break
 			
 			attempts += 1
 		
-		if valid_position:
-			var node = MapNode.new(i, new_position)
+		if valid_global_position:
+			var node = MapNode.new(i, new_global_position)
 			nodes.append(node)
 		else:
 			push_warning("Could not place node %d after %d attempts" % [i, max_attempts])
@@ -115,7 +115,7 @@ func connect_nearest_neighbors():
 		var distances: Array = []
 		for other_node in nodes:
 			if other_node != node:
-				var distance = node.position.distance_to(other_node.position)
+				var distance = node.global_position.distance_to(other_node.global_position)
 				if distance <= connection_distance_threshold:
 					distances.append({"node": other_node, "distance": distance})
 		
@@ -153,13 +153,13 @@ func identify_start_end_nodes():
 	# Find leftmost node (start)
 	start_node = nodes[0]
 	for node in nodes:
-		if node.position.x < start_node.position.x:
+		if node.global_position.x < start_node.global_position.x:
 			start_node = node
 	
 	# Find rightmost node (end)
 	end_node = nodes[0]
 	for node in nodes:
-		if node.position.x > end_node.position.x:
+		if node.global_position.x > end_node.global_position.x:
 			end_node = node
 	
 	# Set node types
@@ -250,7 +250,7 @@ func move_player_to_node(target_node: MapNode):
 		return
 	
 	is_player_moving = true
-	player_sprite.move_to(target_node.position)
+	player_sprite.move_to(target_node.global_position)
 
 # =============================================================================
 # BATTLE INTEGRATION
@@ -301,16 +301,16 @@ func draw_connections_visual():
 				color = Color.YELLOW
 				width = 3.0
 		
-		draw_line(connection.from_node.position, connection.to_node.position, color, width)
+		draw_line(connection.from_node.global_position, connection.to_node.global_position, color, width)
 
 func draw_nodes_visual():
 	"""Draw all nodes with appropriate colors"""
 	for node in nodes:
 		var color = get_node_color(node)
-		draw_circle(node.position, node_radius, color)
+		draw_circle(node.global_position, node_radius, color)
 		
 		# Draw border
-		draw_arc(node.position, node_radius, 0, TAU, 32, Color.WHITE, 2.0)
+		draw_arc(node.global_position, node_radius, 0, TAU, 32, Color.WHITE, 2.0)
 
 func draw_node_labels_visual():
 	"""Draw labels on nodes"""
@@ -320,7 +320,7 @@ func draw_node_labels_visual():
 	for node in nodes:
 		var label = str(node.id)
 		var text_size = font.get_string_size(label, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
-		var text_pos = node.position - text_size / 2
+		var text_pos = node.global_position - text_size / 2
 		draw_string(font, text_pos, label, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, Color.WHITE)
 
 func get_node_color(node: MapNode) -> Color:
@@ -345,16 +345,16 @@ func get_node_color(node: MapNode) -> Color:
 func _input(event: InputEvent):
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			handle_node_click(event.position)
+			handle_node_click(get_global_mouse_position())
 
-func handle_node_click(click_position: Vector2):
+func handle_node_click(click_global_position: Vector2):
 	"""Handle clicking on nodes with player movement integration"""
 	# Don't process clicks while player is moving
 	if is_player_moving:
 		return
 	
 	for node in nodes:
-		if click_position.distance_to(node.position) <= node_radius:
+		if click_global_position.distance_to(node.global_position) <= node_radius:
 			if node.available:
 				# Check if player needs to move first
 				if player_sprite and is_player_moving == false:
@@ -378,10 +378,10 @@ func regenerate_map():
 	current_node = null
 	generate_map()
 	
-	# Reposition player at start node
+	# Reglobal_position player at start node
 	if start_node and player_sprite:
 		if player_sprite.has_method("set_pos"):
-			player_sprite.set_pos(start_node.position)
+			player_sprite.set_pos(start_node.global_position)
 
 func get_available_nodes() -> Array[MapNode]:
 	"""Get all currently available nodes"""
@@ -433,11 +433,11 @@ func load_map_state(state: Dictionary):
 			current_node = node
 			break
 	
-	# Update availability and player position
+	# Update availability and player global_position
 	update_node_availability()
 	
 	if current_node and player_sprite:
 		if player_sprite.has_method("set_pos"):
-			player_sprite.set_pos(current_node.position)
+			player_sprite.set_pos(current_node.global_position)
 	
 	queue_redraw()

@@ -1,8 +1,12 @@
 extends Node2D
 
+@export_group("Battle Map Config")
 @export var map_size : Vector2i
 @export var tile_size : int
 var tile_map_size : Vector2i 
+
+
+
 
 @onready var unit_parent = $Unit_Parent
 @onready var flow_gen = $FlowGen
@@ -10,6 +14,7 @@ var tile_map_size : Vector2i
 @onready var board_tiles = $BoardUI
 @onready var enemy_spawner = $Enemy_Spawner
 @onready var manager_timer = $Manager_Update
+@onready var viewport = $Viewport
 
 var enemies_tiles : Array[Array]
 var allies_tiles : Array[Array]
@@ -45,6 +50,9 @@ func end_battle():
 	# TODO: Add way to calculate if the player won or lost
 	battle_ended.emit(true)
 	
+
+
+
 # Triggers after both the manager and all its children have entered the scene
 func _ready():
 	# Initalize the 2D arrays for enemies and allies
